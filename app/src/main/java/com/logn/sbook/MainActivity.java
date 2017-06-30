@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         BookAdapter bookAdapter=new BookAdapter(MainActivity.this,bookList);
         recyclerView.setAdapter(bookAdapter);
+
+
     }
     //从后台数据库获取Book数据
     private void initBook(){

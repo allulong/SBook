@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.logn.sbook.R;
 import com.logn.sbook.beans.BookInfo;
@@ -28,7 +29,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.book_item,parent,false);
-        ViewHolder holder=new ViewHolder(view);
+        final ViewHolder holder=new ViewHolder(view);
+        holder.bookView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position=holder.getAdapterPosition();
+                BookInfo bookInfo=mBookList.get(position);
+                Toast.makeText(v.getContext(),bookInfo.getBookName()+"",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         return holder;
     }
 
@@ -55,6 +65,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        View bookView;
         ImageView userImage;
         ImageView userSex;
         TextView userName;
@@ -68,6 +79,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         TextView qulity;
         public ViewHolder(View itemView) {
             super(itemView);
+            bookView=itemView;
             userImage= (ImageView) itemView.findViewById(R.id.user_ImageId);
             userSex= (ImageView) itemView.findViewById(R.id.sex_user);
             userName= (TextView) itemView.findViewById(R.id.user_Name);
@@ -80,5 +92,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             date= (TextView) itemView.findViewById(R.id.date);
             qulity= (TextView) itemView.findViewById(R.id.qulity_book);
         }
+
     }
 }

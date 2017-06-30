@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged"/>
+        <activity android:name=".ui.GuideActivity"/>
     </application>
 
 </manifest>
