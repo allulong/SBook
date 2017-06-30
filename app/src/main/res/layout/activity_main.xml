@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mainView"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.logn.sbook.MainActivity">
 
     <LinearLayout
@@ -14,50 +14,60 @@
         android:layout_height="40dp"
         android:background="@color/cyan"
         android:focusableInTouchMode="true">
+
         <SearchView
             android:id="@+id/searchView"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <!--scrollview-->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/displayView"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:flipInterval="5000">
-        </android.support.v4.view.ViewPager>
-        <GridView
-            android:id="@+id/gridView"
-            android:numColumns="5"
-            android:gravity="center"
-            android:horizontalSpacing="1pt"
-            android:verticalSpacing="1pt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></GridView>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/displayView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:flipInterval="5000"></android.support.v4.view.ViewPager>
 
-        </LinearLayout>
+                <GridView
+                    android:id="@+id/gridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="1pt"
+                    android:numColumns="5"
+                    android:verticalSpacing="1pt"></GridView>
 
-    </ScrollView>
-        </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimary" />
 
 
 </LinearLayout>
