@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#eee">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,8 +22,42 @@
             android:layout_gravity="center_vertical"
             android:text="出售书籍"
             android:textColor="@color/white"
-            android:layout_marginLeft="130dp"
             android:textSize="20sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="ISBN:"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/isbn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:hint="请直接输入或点击右侧图标扫描"
+            android:textColorHint="@color/gray" />
+        <ImageButton
+            android:id="@+id/isbn_search"
+            android:background="@color/white"
+            android:layout_gravity="center_vertical"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/isbn_search"
+            />
+        <ImageButton
+            android:layout_width="30dp"
+            android:background="@color/white"
+            android:layout_height="30dp"
+            android:id="@+id/isbn_button"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/QR_Code"/>
     </LinearLayout>
 
 </LinearLayout>
