@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
-import com.logn.sbook.MainActivity;
+//import com.logn.sbook.MainActivity;
 import com.logn.sbook.R;
 import com.logn.sbook.ui.GuideActivity;
 

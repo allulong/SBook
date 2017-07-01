@@ -3,16 +3,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.v4.view.ViewPager
+    <com.shizhefei.view.viewpager.SViewPager
+        android:id="@+id/tabmain_viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/viewPager"
-        android:layout_weight="1">
-    </android.support.v4.view.ViewPager>
+        android:layout_weight="1"
+        android:background="#eee" />
+
     <com.shizhefei.view.indicator.FixedIndicatorView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/indicator">
+        android:layout_height="50dp"
+        android:id="@+id/indicator"
+        android:background="#fff">
 
     </com.shizhefei.view.indicator.FixedIndicatorView>
 
