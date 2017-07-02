@@ -2,40 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#eee">
-
+    android:background="#eee"
+    android:orientation="vertical">
+    <!--Tab-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/cyan"
         android:orientation="horizontal">
-       <ImageButton
-           android:id="@+id/button_return"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:background="@color/cyan"
-           android:layout_marginLeft="10dp" />
+
+        <ImageButton
+            android:layout_marginTop="7dp"
+            android:id="@+id/button_return"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="7dp"
+            android:background="@color/cyan"
+            android:src="@drawable/addreturn"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
             android:text="出售书籍"
             android:textColor="@color/white"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
     </LinearLayout>
+    <!--ISBN-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="40dp"
+        android:background="@color/white"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="ISBN:"
-            android:textSize="15sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
         <EditText
             android:id="@+id/isbn_edit"
             android:layout_width="wrap_content"
@@ -43,21 +51,198 @@
             android:layout_gravity="center_vertical"
             android:hint="请直接输入或点击右侧图标扫描"
             android:textColorHint="@color/gray" />
+
         <ImageButton
             android:id="@+id/isbn_search"
-            android:background="@color/white"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/isbn_search"
-            />
-        <ImageButton
-            android:layout_width="30dp"
             android:background="@color/white"
-            android:layout_height="30dp"
-            android:id="@+id/isbn_button"
+            android:src="@drawable/isbn_search" />
+
+        <ImageButton
+            android:id="@+id/isbn_qrcode"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="right|center_vertical"
-            android:src="@drawable/QR_Code"/>
+            android:background="@color/white"
+            android:src="@drawable/qr_code" />
     </LinearLayout>
+
+    <!--书本信息-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <!--Book Cover-->
+        <ImageButton
+            android:id="@+id/add_book_image"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:background="#eee"
+            android:padding="5dp"
+            android:src="@drawable/defaultcover" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/add_book_name"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:gravity="center_vertical"
+                android:hint="书名"
+                android:textColorHint="@color/gray"
+                android:textSize="15sp" />
+            <!--分割线-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:src="@drawable/strightline"/>
+            <EditText
+                android:id="@+id/add_book_author"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:gravity="center_vertical"
+                android:hint="作者"
+                android:textColorHint="@color/gray"
+                android:textSize="15sp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:src="@drawable/strightline"/>
+            <EditText
+                android:id="@+id/add_book_publisher"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:gravity="center_vertical"
+                android:hint="出版社"
+                android:textColorHint="@color/gray"
+                android:textSize="15sp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:src="@drawable/strightline"/>
+            <EditText
+                android:id="@+id/add_book_oldprice"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:gravity="center_vertical"
+                android:hint="原价"
+                android:textColorHint="@color/gray"
+                android:textSize="15sp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:src="@drawable/strightline"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="出售价："
+                android:textColor="@color/black"
+                android:gravity="center_vertical"/>
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:id="@+id/add_book_newprice"
+                android:gravity="center_vertical"/>
+            <TextView
+                android:id="@+id/text_number"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="数量："
+                android:textColor="@color/black"
+                android:gravity="center_vertical"/>
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:id="@+id/add_book_number"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="分    类："
+                android:textColor="@color/black"
+                android:gravity="center_vertical"/>
+            <Button
+                android:background="@color/white"
+                android:hint="点击选择分类"
+                android:textColorHint="@color/gray"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:id="@+id/add_book_kind"
+                android:gravity="center_vertical"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="新旧："
+                android:textColor="@color/black"
+                android:gravity="center_vertical" />
+            <Button
+                android:background="@color/white"
+                android:textColorHint="@color/gray"
+                android:hint="点击选择新旧"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:id="@+id/add_book_qulity"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="备    注："
+                android:textColor="@color/black"
+                android:gravity="center_vertical"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:id="@+id/add_book_remark"
+                android:gravity="center_vertical"
+                android:hint="可为空"
+                android:textColorHint="@color/gray"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发布"
+        android:background="@color/cyan"
+        android:gravity="center"/>
 
 </LinearLayout>

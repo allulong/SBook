@@ -93,7 +93,7 @@ public class viewPagerFragment extends LazyFragment{
 //        }
 
 //    };
-    //从后台数据库获取Book数据
+    //从后台数据库获取Book数据-首页
     private void initBook(){
         //example for test
         for (int i=0;i<5;i++){
@@ -112,7 +112,7 @@ public class viewPagerFragment extends LazyFragment{
             bookList.add(bookInfo);
         }
     }
-    //搜索框
+    //搜索框-首页
     public void implSearchView(){
         searchView= (SearchView) findViewById(R.id.searchView);
         searchView.setIconifiedByDefault(false);
@@ -138,7 +138,7 @@ public class viewPagerFragment extends LazyFragment{
 //        viewFlipper.setOutAnimation(this,R.anim.slide_out_right);
 //        viewFlipper.startFlipping();
 //    }
-    //实现ViewPager
+    //实现ViewPager-首页
     public void displayWithViewPager(){
         viewPagerAdapter viewPagerAdapter = new viewPagerAdapter();
         viewPager= (ViewPager) findViewById(R.id.displayView);
@@ -190,7 +190,7 @@ public class viewPagerFragment extends LazyFragment{
 //        }
 //        return false;
 //    }
-    //GridView-书的分类
+    //GridView-书的分类-首页
     public void kindsOfBooks(){
         gridView= (GridView) findViewById(R.id.gridView);
         int []imageIds=new int[]{
@@ -217,10 +217,7 @@ public class viewPagerFragment extends LazyFragment{
         gridView.setOnItemClickListener(new viewPagerFragment.ItemClickListener());
     }
 
-
-
-
-    //实现gridView的点击事件
+    //实现gridView的点击事件-首页
     class ItemClickListener implements AdapterView.OnItemClickListener{
 
         @Override

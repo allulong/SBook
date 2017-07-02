@@ -21,21 +21,23 @@ import java.util.List;
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private List<BookInfo> mBookList;
     Context context;
-    public BookAdapter(Context context,List<BookInfo> bookInfoList){
-        this.context=context;
-        mBookList=bookInfoList;
+
+    public BookAdapter(Context context, List<BookInfo> bookInfoList) {
+        this.context = context;
+        mBookList = bookInfoList;
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.book_item,parent,false);
-        final ViewHolder holder=new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.book_item, parent, false);
+        final ViewHolder holder = new ViewHolder(view);
         holder.bookView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position=holder.getAdapterPosition();
-                BookInfo bookInfo=mBookList.get(position);
-                Toast.makeText(v.getContext(),bookInfo.getBookName()+"",
+                int position = holder.getAdapterPosition();
+                BookInfo bookInfo = mBookList.get(position);
+                Toast.makeText(v.getContext(), bookInfo.getBookName() + "",
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -44,7 +46,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        BookInfo bookInfo=mBookList.get(position);
+        BookInfo bookInfo = mBookList.get(position);
         holder.userName.setText(bookInfo.getUserName());
         holder.userSex.setImageResource(bookInfo.getSexImageId());
         holder.userImage.setImageResource(bookInfo.getUserImageId());
@@ -77,20 +79,21 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         TextView oldPrice;
         TextView date;
         TextView qulity;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            bookView=itemView;
-            userImage= (ImageView) itemView.findViewById(R.id.user_ImageId);
-            userSex= (ImageView) itemView.findViewById(R.id.sex_user);
-            userName= (TextView) itemView.findViewById(R.id.user_Name);
-            userAddress= (TextView) itemView.findViewById(R.id.user_Address);
-            bookImage= (ImageView) itemView.findViewById(R.id.book_ImageId);
-            bookName= (TextView) itemView.findViewById(R.id.book_name);
-            author= (TextView) itemView.findViewById(R.id.author);
-            newPrice= (TextView) itemView.findViewById(R.id.price_new);
-            oldPrice= (TextView) itemView.findViewById(R.id.price_old);
-            date= (TextView) itemView.findViewById(R.id.date);
-            qulity= (TextView) itemView.findViewById(R.id.qulity_book);
+            bookView = itemView;
+            userImage = (ImageView) itemView.findViewById(R.id.user_ImageId);
+            userSex = (ImageView) itemView.findViewById(R.id.sex_user);
+            userName = (TextView) itemView.findViewById(R.id.user_Name);
+            userAddress = (TextView) itemView.findViewById(R.id.user_Address);
+            bookImage = (ImageView) itemView.findViewById(R.id.book_ImageId);
+            bookName = (TextView) itemView.findViewById(R.id.book_name);
+            author = (TextView) itemView.findViewById(R.id.author);
+            newPrice = (TextView) itemView.findViewById(R.id.price_new);
+            oldPrice = (TextView) itemView.findViewById(R.id.price_old);
+            date = (TextView) itemView.findViewById(R.id.date);
+            qulity = (TextView) itemView.findViewById(R.id.qulity_book);
         }
 
     }

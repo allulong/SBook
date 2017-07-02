@@ -1,5 +1,6 @@
 package com.logn.sbook.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,7 +58,9 @@ public class GuideActivity extends FragmentActivity{
             if (v == centerView) {
                 //还可以移除哦
                 //indicator.removeCenterView();
-                Toast.makeText(getApplicationContext(), "点击了CenterView", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "点击了CenterView", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(GuideActivity.this,AddActivity.class);
+                startActivity(intent);
             }
         }
     };

@@ -6,6 +6,7 @@ package com.logn.sbook.beans;
 
 public class BookInfo {
     private int id;
+    private int userId;
     private long ISBN;
     private int userImageId;//用户头像
     private int sexImageId;
@@ -18,6 +19,32 @@ public class BookInfo {
     private String oldPrice;
     private String date;
     private String quality;
+    private String publisher;
+    private int bookNumber;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getBookNumber() {
+        return bookNumber;
+    }
+
+    public void setBookNumber(int bookNumber) {
+        this.bookNumber = bookNumber;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
 
     public long getISBN() {
         return ISBN;
