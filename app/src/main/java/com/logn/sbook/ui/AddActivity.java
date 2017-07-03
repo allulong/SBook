@@ -11,13 +11,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.logn.sbook.R;
+import com.logn.titlebar.TitleBar;
 
 /**
  * Created by Vivian on 2017/7/1.
  */
 
-public class AddActivity extends AppCompatActivity implements View.OnClickListener{
-    private ImageButton imageButton_return;
+public class AddActivity extends AppCompatActivity {
+    //    private ImageButton imageButton_return;
     private EditText editText_isbn;
     private ImageButton imageButton_isbn_search;
     private ImageButton imageButton_isbn_qrcode;
@@ -31,16 +32,19 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private EditText editText_remark;
     private Button choose_kind;
     private Button choose_qulity;
+    TitleBar add_return;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         initWidget();
+        add_return.setOnTitleClickListener(listener);
     }
 
     public void initWidget() {
-        imageButton_return = (ImageButton) findViewById(R.id.button_return);
+//        imageButton_return = (ImageButton) findViewById(R.id.button_return);
+        add_return = (TitleBar) findViewById(R.id.add_titlebar);
         editText_isbn = (EditText) findViewById(R.id.isbn_edit);
         imageButton_isbn_search = (ImageButton) findViewById(R.id.isbn_search);
         imageButton_isbn_qrcode = (ImageButton) findViewById(R.id.isbn_qrcode);
@@ -54,17 +58,35 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         editText_remark = (EditText) findViewById(R.id.add_book_remark);
         choose_kind = (Button) findViewById(R.id.add_book_kind);
         choose_qulity = (Button) findViewById(R.id.add_book_qulity);
-        imageButton_return.setOnClickListener(this);
+//        imageButton_return.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.button_return:
-                Intent intent=new Intent(AddActivity.this,GuideActivity.class);
-                startActivity(intent);
-                finish();
-                break;
+    //    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()){
+//            case R.id.button_return:
+//                Intent intent=new Intent(AddActivity.this,GuideActivity.class);
+//                startActivity(intent);
+//                finish();
+//                break;
+//        }
+//    }
+    TitleBar.OnTitleClickListener listener = new TitleBar.OnTitleClickListener() {
+        @Override
+        public void onLeftClick() {
+            Intent intent = new Intent(AddActivity.this, GuideActivity.class);
+            startActivity(intent);
+            finish();
         }
-    }
+
+        @Override
+        public void onRightClick() {
+
+        }
+
+        @Override
+        public void onTitleClick() {
+
+        }
+    };
 }

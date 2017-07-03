@@ -21,6 +21,15 @@ public class BookInfo {
     private String quality;
     private String publisher;
     private int bookNumber;
+    private String userContact;
+
+    public String getUserContact() {
+        return userContact;
+    }
+
+    public void setUserContact(String userContact) {
+        this.userContact = userContact;
+    }
 
     public int getUserId() {
         return userId;

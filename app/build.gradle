@@ -24,14 +24,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+
+    compile project(':titlebar')
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.shizhefei:ViewPagerIndicator:1.1.6'
-<<<<<<< HEAD
     testCompile 'junit:junit:4.12'
-=======
-    compile project(':titlebar')
->>>>>>> f7e7c8f05e9ec9ca0dd11a64d7a65e97a16debbc
 }

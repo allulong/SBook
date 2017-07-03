@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".ui.AddActivity" />
         <activity android:name=".ui.GuideActivity" />
-        <activity android:name=".ui.kindsOfBooksDetail"></activity>
+        <activity android:name=".ui.kindsOfBooksDetail" />
+        <activity android:name=".ui.BookDetailInfo"></activity>
     </application>
 
 </manifest>
