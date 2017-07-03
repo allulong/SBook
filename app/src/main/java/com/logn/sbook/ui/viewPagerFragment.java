@@ -78,21 +78,7 @@ public class viewPagerFragment extends LazyFragment{
 
     }
 
-//    @Override
-//    protected void onDestroyViewLazy() {
-//        super.onDestroyViewLazy();
-//        handler.removeMessages(1);
-//    }
-//
-//    @SuppressLint("HandlerLeak")
-//    private Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(android.os.Message msg) {
-//            textView.setVisibility(View.VISIBLE);
-//
-//        }
 
-//    };
     //从后台数据库获取Book数据-首页
     private void initBook(){
         //example for test
