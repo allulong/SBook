@@ -100,6 +100,9 @@ public class viewPagerFragment extends LazyFragment{
             bookInfo.setSexImageId(R.mipmap.ic_launcher);
             bookInfo.setUserImageId(R.mipmap.ic_launcher);
             bookInfo.setUserName("banz");
+            bookInfo.setISBN(000000);
+            bookInfo.setPublisher("SSDUT");
+            bookInfo.setUserContact("DalianSSDUT");
             bookList.add(bookInfo);
         }
     }
