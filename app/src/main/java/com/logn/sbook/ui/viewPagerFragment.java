@@ -103,6 +103,7 @@ public class viewPagerFragment extends LazyFragment{
             bookInfo.setISBN(000000);
             bookInfo.setPublisher("SSDUT");
             bookInfo.setUserContact("DalianSSDUT");
+            bookInfo.setBookNumber("1");
             bookList.add(bookInfo);
         }
     }

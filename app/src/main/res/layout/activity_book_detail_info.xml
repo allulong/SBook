@@ -159,7 +159,7 @@
                 <TextView
                     android:layout_weight="1"
                     android:id="@+id/detail_book_number"
-                    android:text="qulity"
+                    android:text="0"
                     android:layout_marginLeft="3dp"
                     android:textColor="@color/gray"
                     android:layout_width="wrap_content"

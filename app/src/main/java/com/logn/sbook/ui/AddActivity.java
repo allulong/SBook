@@ -55,7 +55,7 @@ public class AddActivity extends AppCompatActivity {
         editText_book_oldprice = (EditText) findViewById(R.id.add_book_oldprice);
         editText_book_newprice = (EditText) findViewById(R.id.add_book_newprice);
         editText_book_number = (EditText) findViewById(R.id.add_book_number);
-        editText_remark = (EditText) findViewById(R.id.add_book_remark);
+        editText_remark = (EditText) findViewById(R.id.add_book_publisher);
         choose_kind = (Button) findViewById(R.id.add_book_kind);
         choose_qulity = (Button) findViewById(R.id.add_book_qulity);
 //        imageButton_return.setOnClickListener(this);

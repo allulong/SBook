@@ -1,10 +1,12 @@
 package com.logn.sbook.beans;
 
+import java.io.Serializable;
+
 /**
  * Created by oureda on 2017/6/28.
  */
 
-public class BookInfo {
+public class BookInfo implements Serializable{
     private int id;
     private int userId;
     private long ISBN;
@@ -20,7 +22,7 @@ public class BookInfo {
     private String date;
     private String quality;
     private String publisher;
-    private int bookNumber;
+    private String bookNumber;
     private String userContact;
 
     public String getUserContact() {
@@ -39,11 +41,11 @@ public class BookInfo {
         this.userId = userId;
     }
 
-    public int getBookNumber() {
+    public String getBookNumber() {
         return bookNumber;
     }
 
-    public void setBookNumber(int bookNumber) {
+    public void setBookNumber(String bookNumber) {
         this.bookNumber = bookNumber;
     }
 
