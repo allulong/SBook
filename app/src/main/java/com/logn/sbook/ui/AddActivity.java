@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.logn.sbook.R;
 import com.logn.titlebar.TitleBar;
+import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -173,7 +174,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                     break;
                 // 打开相册
                 case R.id.btn_choose_img:
-                    choosePictureFromAlbum(AddActivity.this);
+//                    choosePictureFromAlbum(AddActivity.this);
+                    Crop.pickImage(AddActivity.this);
                     if (mCameraDialog != null) {
                         mCameraDialog.dismiss();
                     }
@@ -192,7 +194,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     //打开照相机拍照获取图片
     public void takePhoto(Context context) {
         File outputImage = new File(context.getExternalCacheDir(), "output_image.jpg");
-        try {
+            try {
             if (outputImage.exists()) {
                 outputImage.delete();
             }
@@ -214,6 +216,12 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+            beginCrop(data.getData());
+        } else if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, data);
+        }
         switch (requestCode) {
             case TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
@@ -227,19 +235,33 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 }
                 break;
             case CHOOSE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        //4.4及以上系统使用这个方法处理图片
-                        handleImageOnKitKat(data);
-                    } else {
-                        //4.4及以下系统使用这个方法处理图片
-                        handleImageBeforeKitKat(data);
+//                if (resultCode == RESULT_OK) {
+//                    if (Build.VERSION.SDK_INT >= 19) {
+//                        //4.4及以上系统使用这个方法处理图片
+//                        handleImageOnKitKat(data);
+//                    } else {
+//                        //4.4及以下系统使用这个方法处理图片
+//                        handleImageBeforeKitKat(data);
+//
+//                    }
+//                }
 
-                    }
-                }
                 break;
             default:
                 break;
+        }
+    }
+
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "output_image.jpg"));
+        Crop.of(source, destination).asSquare().start(this);
+    }
+
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == RESULT_OK) {
+            imageButton_book_look.setImageURI(Crop.getOutput(result));
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -254,6 +276,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             openAlbum();
         }
     }
+
 
     private void openAlbum() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
