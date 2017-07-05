@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.logn.sbook.ui.kindsOfBooksDetail">
+    <com.logn.titlebar.TitleBar
+        android:id="@+id/kind_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/cyan"
+        app:leftButtonBackground="@drawable/addreturn"
+        app:titleBarText="类别"
+        ></com.logn.titlebar.TitleBar>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/kind_of_gridview_recycleview"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

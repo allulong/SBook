@@ -1,6 +1,7 @@
 package com.logn.sbook.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,9 @@ import android.widget.Toast;
 
 import com.logn.sbook.R;
 import com.logn.sbook.beans.BookInfo;
+import com.logn.sbook.ui.BookDetailInfo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -37,8 +40,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 BookInfo bookInfo = mBookList.get(position);
-                Toast.makeText(v.getContext(), bookInfo.getBookName() + "",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(v.getContext(), bookInfo.getBookName() + "",
+//                        Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent("com.logn.sbook.ui.BookDetailInfo");
+                intent.putExtra("bookInfo", (Serializable) bookInfo);
+                v.getContext().startActivity(intent);
             }
         });
         return holder;

@@ -2,33 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eee"
     android:orientation="vertical">
     <!--Tab-->
-    <LinearLayout
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:background="@color/cyan"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageButton-->
+            <!--android:layout_marginTop="7dp"-->
+            <!--android:id="@+id/button_return"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_marginLeft="7dp"-->
+            <!--android:background="@color/cyan"-->
+            <!--android:src="@drawable/addreturn"/>-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:text="出售书籍"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="20sp" />-->
+    <!--</LinearLayout>-->
+    <com.logn.titlebar.TitleBar
+        android:id="@+id/add_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:background="@color/cyan"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:layout_marginTop="7dp"
-            android:id="@+id/button_return"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="7dp"
-            android:background="@color/cyan"
-            android:src="@drawable/addreturn"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:text="出售书籍"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-    </LinearLayout>
+        app:leftButtonBackground="@drawable/addreturn"
+        app:titleBarText="出售书籍"
+        ></com.logn.titlebar.TitleBar>
     <!--ISBN-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,17 +65,19 @@
             android:id="@+id/isbn_search"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
             android:background="@color/white"
-            android:src="@drawable/isbn_search" />
+            android:src="@drawable/searchisbn" />
 
         <ImageButton
             android:id="@+id/isbn_qrcode"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_gravity="right|center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
             android:background="@color/white"
-            android:src="@drawable/qr_code" />
+            android:src="@drawable/qrcode" />
     </LinearLayout>
 
     <!--书本信息-->
@@ -222,16 +233,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="备    注："
+                android:text="联系方式："
                 android:textColor="@color/black"
                 android:gravity="center_vertical"/>
             <EditText
+                android:hint="如微信／123456"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="@color/black"
-                android:id="@+id/add_book_remark"
+                android:id="@+id/add_user_contact"
                 android:gravity="center_vertical"
-                android:hint="可为空"
                 android:textColorHint="@color/gray"
                 android:textSize="15sp"/>
 
