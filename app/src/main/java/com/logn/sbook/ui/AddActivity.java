@@ -17,7 +17,7 @@ import com.logn.titlebar.TitleBar;
  * Created by Vivian on 2017/7/1.
  */
 
-public class AddActivity extends AppCompatActivity {
+public class AddActivity extends AppCompatActivity implements View.OnClickListener {
     //    private ImageButton imageButton_return;
     private EditText editText_isbn;
     private ImageButton imageButton_isbn_search;
@@ -40,6 +40,8 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
         initWidget();
         add_return.setOnTitleClickListener(listener);
+
+        imageButton_book_look.setOnClickListener(this);
     }
 
     public void initWidget() {
@@ -89,4 +91,15 @@ public class AddActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.add_book_image:
+
+                break;
+        }
+    }
+
+    //弹出对话框，选择图片获取 
 }
