@@ -34,12 +34,12 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.shizhefei:ViewPagerIndicator:1.1.6'
-<<<<<<< HEAD
+
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.google.code.gson:gson:2.8.1'
-=======
+
 
     compile project(':titlebar')
 
@@ -49,5 +49,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 
->>>>>>> 02280afc93dbcd2f43780e7f64a3eb7d22538822
+
 }
