@@ -2,6 +2,7 @@ package com.logn.sbook.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import android.os.Handler;
 
 public class viewPagerFragment extends LazyFragment{
     public static final String INTENT_STRING_TABNAME = "intent_String_tabName";
+    public static final String KIND_OF_BOOK="intent_String_kindOfBook";
     private String tabName;
     private int position;
     private SearchView searchView;
@@ -47,6 +49,9 @@ public class viewPagerFragment extends LazyFragment{
     private ViewPager viewPager;
     //创建list，保存获得的数据
     private List<BookInfo> bookList=new ArrayList<>();
+    String []kindsOfBooks=new String[]{
+            "计算机","小说","题库","考研","其他"
+    } ;
 
     @Override
     protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -78,21 +83,7 @@ public class viewPagerFragment extends LazyFragment{
 
     }
 
-//    @Override
-//    protected void onDestroyViewLazy() {
-//        super.onDestroyViewLazy();
-//        handler.removeMessages(1);
-//    }
-//
-//    @SuppressLint("HandlerLeak")
-//    private Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(android.os.Message msg) {
-//            textView.setVisibility(View.VISIBLE);
-//
-//        }
 
-//    };
     //从后台数据库获取Book数据-首页
     private void initBook(){
         //example for test
@@ -109,6 +100,10 @@ public class viewPagerFragment extends LazyFragment{
             bookInfo.setSexImageId(R.mipmap.ic_launcher);
             bookInfo.setUserImageId(R.mipmap.ic_launcher);
             bookInfo.setUserName("banz");
+            bookInfo.setISBN(000000);
+            bookInfo.setPublisher("SSDUT");
+            bookInfo.setUserContact("DalianSSDUT");
+            bookInfo.setBookNumber("1");
             bookList.add(bookInfo);
         }
     }
@@ -117,7 +112,6 @@ public class viewPagerFragment extends LazyFragment{
         searchView= (SearchView) findViewById(R.id.searchView);
         searchView.setIconifiedByDefault(false);
         searchView.setSubmitButtonEnabled(true);
-        searchView.setQueryHint("书名");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -197,15 +191,13 @@ public class viewPagerFragment extends LazyFragment{
                 R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher
                 ,R.mipmap.ic_launcher,R.mipmap.ic_launcher
         };
-        String []kinds=new String[]{
-                "计算机","小说","题库","考研","其他"
-        } ;
+
         ArrayList<HashMap<String,Object>> IsImageItem=new
                 ArrayList<HashMap<String, Object>>();
         for (int i=0;i<imageIds.length;i++){
             HashMap<String,Object>map=new HashMap<String,Object>();
             map.put("ItemImage",imageIds[i]);
-            map.put("ItemText",kinds[i]);
+            map.put("ItemText",kindsOfBooks[i]);
             IsImageItem.add(map);
         }
 
@@ -223,8 +215,11 @@ public class viewPagerFragment extends LazyFragment{
         @Override
         public void onItemClick(AdapterView<?> parent,
                                 View view, int position, long id) {
-            Toast.makeText(getApplicationContext(),position+""
-                    ,Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(),position+""
+//                    ,Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(getApplicationContext(),kindsOfBooksDetail.class);
+            intent.putExtra(KIND_OF_BOOK,kindsOfBooks[position]);
+            startActivity(intent);
         }
     }
 }
