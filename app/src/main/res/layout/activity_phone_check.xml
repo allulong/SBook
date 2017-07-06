@@ -1,8 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
 
+    <com.logn.titlebar.TitleBar
+        android:id="@+id/title_bar_phone_check"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimaryDark"
+        app:leftText="返回"
+        app:titleBarColor="#fff"
+        app:titleBarText="注册">
+
+    </com.logn.titlebar.TitleBar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="22dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="#999999"
+            android:hint="手机号码"
+            android:inputType="phone" />
+
+        <Button
+            android:id="@+id/btn_send_check_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="发送验证码" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_check_code"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="22dp"
+        android:background="#999999"
+        android:hint="短信验证码" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="22dp"
+        android:background="#999999"
+        android:hint="密码" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="22dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="返回" />
+
+        <Button
+            android:id="@+id/btn_next_step"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="下一步" />
+    </LinearLayout>
 
 </LinearLayout>
