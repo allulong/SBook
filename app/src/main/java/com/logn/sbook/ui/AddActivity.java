@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,14 +34,25 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.logn.sbook.R;
+import com.logn.sbook.gsonforbook.BookGson;
+import com.logn.sbook.util.HttpUtil;
 import com.logn.titlebar.TitleBar;
 import com.soundcloud.android.crop.Crop;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.jar.Manifest;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by Vivian on 2017/7/1.
@@ -77,6 +89,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         add_return.setOnTitleClickListener(listener);
 
         imageButton_book_look.setOnClickListener(this);
+        imageButton_isbn_search.setOnClickListener(this);
     }
 
     public void initWidget() {
@@ -134,7 +147,77 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 showDialog(AddActivity.this);
 
                 break;
+            case R.id.isbn_search:
+                requestBookJSON();
+
+                break;
         }
+    }
+
+    //请求书籍JSON数据
+    public void requestBookJSON(){
+
+        String isbnUri="https://api.douban.com/v2/book/isbn/"+editText_isbn.getText().toString();
+        HttpUtil.sendOkHttpRequest(isbnUri, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseText=response.body().string();
+                final BookGson bookGson= parseJsonWithGson(responseText,BookGson.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (bookGson!=null){
+                            //执行显示操作
+//                            Intent intent=new Intent(AddActivity.this,AddActivity.class);
+//                            startActivity(intent);
+                            showBookInfoFromJSON(bookGson);
+
+
+                        }else {
+                            Toast.makeText(AddActivity.this,"获取信息失败",Toast
+                            .LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+    //将解析的数据显示在界面中
+    public void showBookInfoFromJSON(BookGson bookGson){
+        String title=bookGson.title;
+        String author= String.valueOf(bookGson.authorList+" ");
+        String publisher=bookGson.publisher;
+        String price=bookGson.price;
+
+        editText_book_name.setText(title);
+        editText_book_author.setText(author);
+        editText_book_publisher.setText(publisher);
+        editText_book_oldprice.setText(price);
+    }
+
+    //GSON解析获得的json数据
+    public BookGson parseJSONWithGSON(String jsonData){
+        try {
+            JSONArray jsonArray=new JSONArray(jsonData);
+            JSONObject jsonObject=jsonArray.getJSONObject(0);
+            String bookContent=jsonObject.toString();
+            return new Gson().fromJson(bookContent,BookGson.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    public  <T> T parseJsonWithGson(String jsonData, Class<T> type) {
+        Gson gson = new Gson();
+        T result = gson.fromJson(jsonData, type);
+        return result;
     }
 
     //弹出对话框，选择图片获取
