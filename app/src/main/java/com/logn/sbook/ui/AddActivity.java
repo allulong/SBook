@@ -167,7 +167,9 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText=response.body().string();
-                final BookGson bookGson= parseJsonWithGson(responseText,BookGson.class);
+                String responseFinal="{\"HeBook\":["+responseText+"]}";
+                Log.d("TAG",responseText);
+                final BookGson bookGson= parseJSONWithGSON(responseFinal);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -191,12 +193,12 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     //将解析的数据显示在界面中
     public void showBookInfoFromJSON(BookGson bookGson){
         String title=bookGson.title;
-        String author= String.valueOf(bookGson.authorList+" ");
+//        String author= String.valueOf(bookGson.authorList);
         String publisher=bookGson.publisher;
         String price=bookGson.price;
 
         editText_book_name.setText(title);
-        editText_book_author.setText(author);
+//        editText_book_author.setText(author);
         editText_book_publisher.setText(publisher);
         editText_book_oldprice.setText(price);
     }
@@ -204,17 +206,22 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     //GSON解析获得的json数据
     public BookGson parseJSONWithGSON(String jsonData){
         try {
-            JSONArray jsonArray=new JSONArray(jsonData);
-            JSONObject jsonObject=jsonArray.getJSONObject(0);
-            String bookContent=jsonObject.toString();
+            JSONObject jsonObject=new JSONObject(jsonData);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeBook");
+            String bookContent=jsonArray.getJSONObject(0).toString();
             return new Gson().fromJson(bookContent,BookGson.class);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
+//        Log.d("TAG","z执行paresejsonwithgson");
+//        Gson gson=new Gson();
+//        BookGson bookGson=gson.fromJson(jsonData,BookGson.class);
+//        return bookGson;
 
     }
     public  <T> T parseJsonWithGson(String jsonData, Class<T> type) {
+        Log.d("TAG","z执行paresejsonwithgson");
         Gson gson = new Gson();
         T result = gson.fromJson(jsonData, type);
         return result;

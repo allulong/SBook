@@ -6,7 +6,7 @@ package com.logn.sbook.gsonforbook;
 
 public class Rating {
     public int max;
-    public int numRates;
+    public int numRaters;
     public String average;
     public int min;
 }
