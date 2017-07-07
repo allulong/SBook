@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -34,7 +35,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.logn.sbook.R;
 import com.logn.sbook.gsonforbook.BookGson;
 import com.logn.sbook.util.HttpUtil;
@@ -81,6 +85,10 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     public static final int CHOOSE_PHOTO = 2;
     private static Uri imageUri;
 
+    boolean Start_QRCode=false;
+    private String QRCode_Result;
+    boolean IsShowDialog=true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +98,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
         imageButton_book_look.setOnClickListener(this);
         imageButton_isbn_search.setOnClickListener(this);
+        imageButton_isbn_qrcode.setOnClickListener(this);
     }
 
     public void initWidget() {
@@ -144,12 +153,19 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_book_image:
-                showDialog(AddActivity.this);
+                if (IsShowDialog) {
+                    showDialog(AddActivity.this);
+                }
 
                 break;
             case R.id.isbn_search:
                 requestBookJSON();
 
+                break;
+            case R.id.isbn_qrcode:
+                Start_QRCode=true;
+                IntentIntegrator intentIntegrator=new IntentIntegrator(AddActivity.this);
+                intentIntegrator.initiateScan();
                 break;
         }
     }
@@ -168,8 +184,11 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText=response.body().string();
                 String responseFinal="{\"HeBook\":["+responseText+"]}";
-                Log.d("TAG",responseText);
+
+                Log.d("responseFinal",responseFinal);
                 final BookGson bookGson= parseJSONWithGSON(responseFinal);
+                Log.d("TAG", String.valueOf(bookGson));
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -177,6 +196,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                             //执行显示操作
 //                            Intent intent=new Intent(AddActivity.this,AddActivity.class);
 //                            startActivity(intent);
+                            Log.d("bookGson", String.valueOf(bookGson));
                             showBookInfoFromJSON(bookGson);
 
 
@@ -193,14 +213,21 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     //将解析的数据显示在界面中
     public void showBookInfoFromJSON(BookGson bookGson){
         String title=bookGson.title;
-//        String author= String.valueOf(bookGson.authorList);
+        StringBuffer authorBuffer=new StringBuffer();
+        for (int i=0;i<bookGson.author.length;i++){
+            authorBuffer.append(bookGson.author[i]+" ");
+        }
+
+
         String publisher=bookGson.publisher;
         String price=bookGson.price;
 
+
         editText_book_name.setText(title);
-//        editText_book_author.setText(author);
+        editText_book_author.setText(authorBuffer);
         editText_book_publisher.setText(publisher);
         editText_book_oldprice.setText(price);
+        loadBookImage(bookGson);
     }
 
     //GSON解析获得的json数据
@@ -209,6 +236,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
             JSONObject jsonObject=new JSONObject(jsonData);
             JSONArray jsonArray=jsonObject.getJSONArray("HeBook");
             String bookContent=jsonArray.getJSONObject(0).toString();
+            Log.d("bookContent",bookContent);
+            System.out.println("-------------------");
             return new Gson().fromJson(bookContent,BookGson.class);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -220,36 +249,56 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 //        return bookGson;
 
     }
-    public  <T> T parseJsonWithGson(String jsonData, Class<T> type) {
-        Log.d("TAG","z执行paresejsonwithgson");
-        Gson gson = new Gson();
-        T result = gson.fromJson(jsonData, type);
-        return result;
+
+    //通过Glide加载图书封面
+    public void loadBookImage(BookGson bookGson){
+        final String requestBookImage=bookGson.images.large;
+        HttpUtil.sendOkHttpRequest(requestBookImage, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.with(AddActivity.this).load(requestBookImage).
+                                into(imageButton_book_look);
+                    }
+                });
+
+            }
+        });
     }
 
     //弹出对话框，选择图片获取
     public void showDialog(Context context) {
-        mCameraDialog = new Dialog(context, R.style.my_dialog);
-        LinearLayout root = (LinearLayout) LayoutInflater.from(context).inflate(
-                R.layout.layout_camera_control, null);
-        root.findViewById(R.id.btn_open_camera).setOnClickListener(btnlistener);
-        root.findViewById(R.id.btn_choose_img).setOnClickListener(btnlistener);
-        root.findViewById(R.id.btn_cancel).setOnClickListener(btnlistener);
-        mCameraDialog.setContentView(root);
-        Window dialogWindow = mCameraDialog.getWindow();
-        dialogWindow.setGravity(Gravity.BOTTOM);
-        dialogWindow.setWindowAnimations(R.style.dialogstyle); // 添加动画
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-        lp.x = 0; // 新位置X坐标
-        lp.y = -20; // 新位置Y坐标
-        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+
+            mCameraDialog = new Dialog(context, R.style.my_dialog);
+            LinearLayout root = (LinearLayout) LayoutInflater.from(context).inflate(
+                    R.layout.layout_camera_control, null);
+            root.findViewById(R.id.btn_open_camera).setOnClickListener(btnlistener);
+            root.findViewById(R.id.btn_choose_img).setOnClickListener(btnlistener);
+            root.findViewById(R.id.btn_cancel).setOnClickListener(btnlistener);
+            mCameraDialog.setContentView(root);
+            Window dialogWindow = mCameraDialog.getWindow();
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            dialogWindow.setWindowAnimations(R.style.dialogstyle); // 添加动画
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+            lp.x = 0; // 新位置X坐标
+            lp.y = -20; // 新位置Y坐标
+            lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
 //      lp.height = WindowManager.LayoutParams.WRAP_CONTENT; // 高度
 //      lp.alpha = 9f; // 透明度
-        root.measure(0, 0);
-        lp.height = root.getMeasuredHeight();
-        lp.alpha = 9f; // 透明度
-        dialogWindow.setAttributes(lp);
-        mCameraDialog.show();
+            root.measure(0, 0);
+            lp.height = root.getMeasuredHeight();
+            lp.alpha = 9f; // 透明度
+            dialogWindow.setAttributes(lp);
+            mCameraDialog.show();
+            IsShowDialog=false;
+
     }
 
     View.OnClickListener btnlistener = new View.OnClickListener() {
@@ -260,14 +309,16 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                     takePhoto(AddActivity.this);
                     if (mCameraDialog != null) {
                         mCameraDialog.dismiss();
+                        IsShowDialog=true;
                     }
                     break;
                 // 打开相册
                 case R.id.btn_choose_img:
 //                    choosePictureFromAlbum(AddActivity.this);
-                    Crop.pickImage(AddActivity.this);
+                    Crop.pickImage(AddActivity.this);//图片选择器，回调onActivityResult
                     if (mCameraDialog != null) {
                         mCameraDialog.dismiss();
+                        IsShowDialog=true;
                     }
 
                     break;
@@ -275,6 +326,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 case R.id.btn_cancel:
                     if (mCameraDialog != null) {
                         mCameraDialog.dismiss();
+                        IsShowDialog=true;
                     }
                     break;
             }
@@ -306,7 +358,21 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //条形码扫描
+        if (Start_QRCode){
+            IntentResult scanResult=IntentIntegrator.parseActivityResult(requestCode,
+                    resultCode,data);
+            if (scanResult!=null){
+                QRCode_Result=scanResult.getContents();
+//                Toast.makeText(AddActivity.this,QRCode_Result,Toast.LENGTH_SHORT).show();
+                editText_isbn.setText(QRCode_Result);
+                requestBookJSON();
 
+            }
+            Start_QRCode=false;
+        }
+
+        //图片裁剪
         if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
             beginCrop(data.getData());
         } else if (requestCode == Crop.REQUEST_CROP) {

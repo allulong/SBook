@@ -69,7 +69,7 @@
             android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
             android:background="@color/white"
-            android:src="@drawable/searchisbn" />
+            android:src="@drawable/isbn_search_pressed" />
 
         <ImageButton
             android:id="@+id/isbn_qrcode"
@@ -78,7 +78,7 @@
             android:layout_marginLeft="15dp"
             android:layout_gravity="center_vertical"
             android:background="@color/white"
-            android:src="@drawable/qrcode" />
+            android:src="@drawable/isbn_qrcode_pressed" />
     </LinearLayout>
 
     <!--书本信息-->
@@ -106,6 +106,7 @@
 
             <EditText
                 android:id="@+id/add_book_name"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:gravity="center_vertical"
@@ -120,6 +121,7 @@
             <EditText
                 android:id="@+id/add_book_author"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="37dp"
                 android:gravity="center_vertical"
                 android:hint="作者"
@@ -132,6 +134,7 @@
             <EditText
                 android:id="@+id/add_book_publisher"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="37dp"
                 android:gravity="center_vertical"
                 android:hint="出版社"
@@ -146,6 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:gravity="center_vertical"
+                android:textColor="@color/black"
                 android:hint="原价"
                 android:textColorHint="@color/gray"
                 android:textSize="15sp" />
@@ -176,6 +180,7 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:textColor="@color/black"
+                android:textSize="15sp"
                 android:id="@+id/add_book_newprice"
                 android:gravity="center_vertical"/>
             <TextView
@@ -189,6 +194,7 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:textColor="@color/black"
+                android:textSize="15sp"
                 android:id="@+id/add_book_number"
                 android:gravity="center_vertical"/>
         </LinearLayout>

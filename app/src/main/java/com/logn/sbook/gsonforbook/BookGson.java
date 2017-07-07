@@ -14,8 +14,8 @@ public class BookGson {
     public Rating rating;
     public String subtitle;
 
-    @SerializedName("author")
-    public List<Author> authorList;
+
+    public String[] author;
 
     public String pubdate;
 
@@ -26,8 +26,8 @@ public class BookGson {
     public String image;
     public String binding;
 
-    @SerializedName("translator")
-    public List<Translator> translatorList;
+
+    public String[] translator;
 
     public String catalog;
     public String pages;
