@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.logn.sbook">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -31,6 +32,8 @@
         </activity>
         <activity android:name=".ui.AddActivity" />
         <activity android:name=".ui.GuideActivity" />
+        <activity android:name=".ui.PhoneCheckActivity" />
+        <activity android:name=".ui.RegisterActivity" />
 
 
         <activity
@@ -50,18 +53,19 @@
         <activity android:name=".ui.kindsOfBooksDetail" />
         <activity android:name=".ui.BookDetailInfo">
             <intent-filter>
-                <action android:name="com.logn.sbook.ui.BookDetailInfo"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.logn.sbook.ui.BookDetailInfo" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.logn.sbook.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.logn.sbook.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 

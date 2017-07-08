@@ -9,6 +9,7 @@ import android.widget.ImageView;
 //import com.logn.sbook.MainActivity;
 import com.logn.sbook.R;
 import com.logn.sbook.ui.GuideActivity;
+import com.logn.sbook.ui.PhoneCheckActivity;
 
 /**
  * Created by long on 2017/6/27.
@@ -32,7 +33,7 @@ public class WelcomeActivity extends FragmentActivity {
         imageView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(WelcomeActivity.this, GuideActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, PhoneCheckActivity.class);
                 startActivity(intent);
                 finish();
             }

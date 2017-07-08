@@ -46,4 +46,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 }
