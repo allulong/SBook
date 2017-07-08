@@ -63,7 +63,7 @@ public class RegisterRunnable implements Runnable {
             int code = connection.getResponseCode();
             if (true) {
                 InputStream is = connection.getInputStream();
-                String json = HttpUtil.getStrFromIS(is);
+                String json = HttpUtils.getStrFromIS(is);
                 Message msg = new Message();
 //                msg.obj = json;
 //                msg.what = 100;

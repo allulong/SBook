@@ -33,7 +33,7 @@ public class WelcomeActivity extends FragmentActivity {
         imageView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(WelcomeActivity.this, PhoneCheckActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, GuideActivity.class);
                 startActivity(intent);
                 finish();
             }
