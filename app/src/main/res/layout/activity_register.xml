@@ -7,12 +7,12 @@
     android:orientation="vertical">
 
     <com.logn.titlebar.TitleBar
-        android:id="@+id/title_bar_phone_check"
+        android:id="@+id/title_bar_register"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/colorPrimaryDark"
         app:leftText="返回"
-        app:rightText="1/2"
+        app:rightText="2/2"
         app:titleBarColor="#fff"
         app:titleBarText="注册">
 
@@ -23,36 +23,31 @@
         android:layout_height="1dp"
         android:background="@color/black" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="22dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/et_phone"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="2"
-            android:background="#999999"
-            android:hint="手机号码"
-            android:inputType="phone" />
-
-        <Button
-            android:id="@+id/btn_send_check_msg"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="发送验证码" />
-    </LinearLayout>
-
     <EditText
-        android:id="@+id/et_check_code"
+        android:id="@+id/et_username"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_margin="22dp"
         android:background="#999999"
-        android:hint="短信验证码" />
+        android:hint="用户名（至少4个字符）" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="22dp"
+        android:background="#999999"
+        android:hint="密码（长度至少为6）"
+        android:inputType="textVisiblePassword" />
+
+    <EditText
+        android:id="@+id/et_password_check"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="22dp"
+        android:background="#999999"
+        android:hint="再输入一遍密码"
+        android:inputType="textPassword" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,18 +57,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_back"
+            android:id="@+id/btn_back_register"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="返回" />
 
         <Button
-            android:id="@+id/btn_next_step"
+            android:id="@+id/btn_finish"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="下一步" />
+            android:text="完成" />
     </LinearLayout>
-
 </LinearLayout>

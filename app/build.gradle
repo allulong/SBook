@@ -44,6 +44,9 @@ dependencies {
     //    compile name:'SMSSDKGUI-<version>',ext:'aar'
     testCompile 'junit:junit:4.12'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+
+    compile 'org.greenrobot:eventbus:3.0.0'
+
     compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
     compile 'com.journeyapps:zxing-android-embedded:2.3.0@aar'
     compile 'com.journeyapps:zxing-android-legacy:2.3.0@aar'
