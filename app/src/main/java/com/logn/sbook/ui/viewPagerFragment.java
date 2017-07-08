@@ -49,7 +49,7 @@ public class viewPagerFragment extends LazyFragment{
     private ViewPager viewPager;
     //创建list，保存获得的数据
     private List<BookInfo> bookList=new ArrayList<>();
-    String []kindsOfBooks=new String[]{
+    private String []kindsOfBooks=new String[]{
             "计算机","小说","题库","考研","其他"
     } ;
 

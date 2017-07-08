@@ -73,6 +73,7 @@
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".ui.MineSettings"></activity>
+        <activity android:name=".ui.ChooseKindOrQulity"/>
 
     </application>
 
