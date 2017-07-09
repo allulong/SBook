@@ -1,6 +1,7 @@
 package com.logn.sbook.ui;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,10 +14,12 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.logn.sbook.R;
+import com.logn.sbook.util.NetworkChangeReceiver;
 import com.shizhefei.view.indicator.FixedIndicatorView;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
@@ -31,10 +34,19 @@ public class GuideActivity extends FragmentActivity{
     private View centerView;
     private FixedIndicatorView indicator;
 
+    //监听网络链接情况
+    private IntentFilter intentFilter;
+    private NetworkChangeReceiver networkChangeReceiver;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
+        //软键盘默认不弹出
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        //监听网络
+        CheckNetwork();
+
         SViewPager viewPager = (SViewPager) findViewById(R.id.tabmain_viewPager);
          indicator= (FixedIndicatorView) findViewById(R.id.indicator);
         indicator.setOnTransitionListener(new OnTransitionTextListener().setColor(Color.CYAN, Color.GRAY));
@@ -120,6 +132,16 @@ public class GuideActivity extends FragmentActivity{
 //
 //                }
 //            };
+
+    //监听网络情况
+    private void CheckNetwork(){
+        intentFilter=new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        networkChangeReceiver=new NetworkChangeReceiver();
+        registerReceiver(networkChangeReceiver,intentFilter);
+    }
+
+    //中间页面的适配器
     private class MyAdapter extends IndicatorViewPager.IndicatorFragmentPagerAdapter {
         private String[] tabNames = {"首页", "我"};
         private int[] tabIcons = {R.drawable.tabbar_home,
@@ -156,5 +178,11 @@ public class GuideActivity extends FragmentActivity{
             viewPagerFragment.setArguments(bundle);
             return viewPagerFragment;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeReceiver);
     }
 }

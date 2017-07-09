@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -53,15 +54,18 @@ public class viewPagerFragment extends LazyFragment{
             "计算机","小说","题库","考研","其他"
     } ;
 
-    @Override
-    protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.layout_preview,container,false);
-    }
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+//    @Override
+//    protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
+//        return inflater.inflate(R.layout.layout_preview,container,false);
+//    }
 
     @Override
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
         tabName=getArguments().getString(INTENT_STRING_TABNAME);
+
         if (tabName=="首页") {
             setContentView(R.layout.activity_main);
 
@@ -69,6 +73,7 @@ public class viewPagerFragment extends LazyFragment{
             implSearchView();
             displayWithViewPager();
             kindsOfBooks();
+            implSwipeRefresh();
 
             //实现recyclerview
             initBook();
@@ -124,6 +129,25 @@ public class viewPagerFragment extends LazyFragment{
                 return false;
             }
         });
+    }
+
+    //实现下拉刷新
+    public void implSwipeRefresh(){
+        swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.main_swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.cyan);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+//                Toast.makeText(getApplicationContext(),"正在刷新...",Toast.LENGTH_SHORT).show();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+//        swipeRefreshLayout.setRefreshing(false);
     }
     //Display自动播放图片
 //    public void autoPlay(){
@@ -188,8 +212,9 @@ public class viewPagerFragment extends LazyFragment{
     public void kindsOfBooks(){
         gridView= (GridView) findViewById(R.id.gridView);
         int []imageIds=new int[]{
-                R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher
-                ,R.mipmap.ic_launcher,R.mipmap.ic_launcher
+                R.drawable.computer,R.drawable.novel,R.drawable.paperwork,
+                R.drawable.kaoyan,R.drawable.other
+
         };
 
         ArrayList<HashMap<String,Object>> IsImageItem=new
