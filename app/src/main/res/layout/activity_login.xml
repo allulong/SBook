@@ -7,12 +7,11 @@
     android:orientation="vertical">
 
     <com.logn.titlebar.TitleBar
-        android:id="@+id/title_bar_register"
+        android:id="@+id/title_bar_login"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/cyan"
         app:leftText="返回"
-        app:rightText="2/2"
         app:titleBarColor="#fff"
         app:titleBarText="注册">
 
@@ -24,31 +23,21 @@
         android:background="@color/black" />
 
     <EditText
-        android:id="@+id/et_username"
+        android:id="@+id/et_username_login"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_margin="22dp"
         android:background="@drawable/edit_bg"
-        android:hint="用户名（至少4个字符）"
+        android:hint="用户名"
         android:textColorHint="@color/gray" />
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/et_password_login"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_margin="22dp"
         android:background="@drawable/edit_bg"
-        android:hint="密码（长度至少为6）"
-        android:inputType="textPassword"
-        android:textColorHint="@color/gray" />
-
-    <EditText
-        android:id="@+id/et_password_check"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="22dp"
-        android:background="@drawable/edit_bg"
-        android:hint="再输入一遍密码"
+        android:hint="密码"
         android:inputType="textPassword"
         android:textColorHint="@color/gray" />
 
@@ -60,20 +49,20 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_back_register"
+            android:id="@+id/btn_2_register"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/cyan"
-            android:text="返回" />
+            android:text="注册" />
 
         <Button
-            android:id="@+id/btn_finish"
+            android:id="@+id/btn_login"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:background="@color/cyan"
-            android:text="完成" />
+            android:text="登录" />
     </LinearLayout>
 </LinearLayout>

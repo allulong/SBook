@@ -10,7 +10,7 @@
         android:id="@+id/title_bar_phone_check"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/cyan"
         app:leftText="返回"
         app:rightText="1/2"
         app:titleBarColor="#fff"
@@ -34,15 +34,18 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="2"
-            android:background="#999999"
+            android:background="@drawable/edit_bg"
             android:hint="手机号码"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:textColorHint="@color/gray" />
 
         <Button
             android:id="@+id/btn_send_check_msg"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:background="@color/cyan"
             android:text="发送验证码" />
     </LinearLayout>
 
@@ -51,8 +54,9 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_margin="22dp"
-        android:background="#999999"
-        android:hint="短信验证码" />
+        android:background="@drawable/edit_bg"
+        android:hint="短信验证码"
+        android:textColorHint="@color/gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,13 +70,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/cyan"
             android:text="返回" />
 
         <Button
             android:id="@+id/btn_next_step"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
             android:layout_weight="1"
+            android:background="@color/cyan"
             android:text="下一步" />
     </LinearLayout>
 

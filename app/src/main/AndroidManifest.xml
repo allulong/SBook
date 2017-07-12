@@ -34,6 +34,7 @@
         <activity android:name=".ui.GuideActivity" />
         <activity android:name=".ui.PhoneCheckActivity" />
         <activity android:name=".ui.RegisterActivity" />
+        <activity android:name=".ui.LoginActivity" />
 
 
         <activity

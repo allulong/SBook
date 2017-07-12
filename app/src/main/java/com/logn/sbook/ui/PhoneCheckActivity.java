@@ -42,7 +42,6 @@ public class PhoneCheckActivity extends FragmentActivity {
     private EventHandler eventHandler;
 
     private String COUNTRY_CODE_CHINA = "86";
-    private int TIME = 60;
 
     private String phone;
 

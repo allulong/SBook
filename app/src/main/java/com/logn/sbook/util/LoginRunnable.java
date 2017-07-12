@@ -11,12 +11,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by long on 2017/7/7.
+ * Created by long on 2017/7/12.
  */
 
-public class RegisterRunnable implements Runnable {
+public class LoginRunnable implements Runnable {
 
-    private String phone;
     private String username;
     private String password;
 
@@ -26,34 +25,28 @@ public class RegisterRunnable implements Runnable {
 
     private String urlStr;
 
+
     private Handler handler;
 
-    public RegisterRunnable(String phone, String username, String password) {
-        this.phone = phone;
+    public LoginRunnable(String username, String password) {
         this.username = username;
         this.password = password;
-        urlStr = "http://c1y7502888.iok.la:23110/register?" +
+        urlStr = "http://c1y7502888.iok.la:23110/login?" +
                 "app_id=" + app_id +
-                "&" +
-                "phone=" + phone +
                 "&" +
                 "username=" + username +
                 "&" +
                 "password=" + password;
-        Log.e("RegisterRunnable", "start");
     }
 
     public void setHandler(Handler handler) {
         this.handler = handler;
     }
 
-    public void setURL(String url) {
-        this.urlStr = url;
-    }
-
     @Override
     public void run() {
         if (urlStr == null) {
+            Log.e("Runnable", "urlStr is empty.");
             return;
         }
         URL url = null;
@@ -76,13 +69,11 @@ public class RegisterRunnable implements Runnable {
                     msg.what = msgCode;
                     handler.sendMessage(msg);
                 }
-                Log.e(code + "获得了JSON：", json);
             } else {
                 Log.e("...", "nothing");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
