@@ -1,6 +1,7 @@
 package com.logn.sbook.ui;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import java.util.List;
 public class kindsOfBooksDetail extends AppCompatActivity {
     //创建list，保存获得的数据
     private List<BookInfo> bookList=new ArrayList<>();
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +33,29 @@ public class kindsOfBooksDetail extends AppCompatActivity {
         titleBar.setOnTitleClickListener(listener);
         //实现recyclerview
         initBook();
+        implSwipeRefresh();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.kind_of_gridview_recycleview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         BookAdapter bookAdapter = new BookAdapter(getApplicationContext(), bookList);
         recyclerView.setAdapter(bookAdapter);
+    }
+
+    //实现下拉刷新
+    private void implSwipeRefresh(){
+        swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.kind_swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.cyan);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
     //从后台数据库获取Book数据-首页
     private void initBook(){
