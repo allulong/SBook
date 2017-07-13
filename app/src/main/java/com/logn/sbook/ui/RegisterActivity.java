@@ -1,7 +1,10 @@
 package com.logn.sbook.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -12,6 +15,9 @@ import android.widget.Toast;
 import com.logn.sbook.R;
 import com.logn.sbook.util.RegisterRunnable;
 import com.logn.titlebar.TitleBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by long on 2017/7/3.
@@ -26,6 +32,44 @@ public class RegisterActivity extends FragmentActivity {
     private Button btnBack, btnFinish;
 
     private String phone;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+
+            if (msg.what == 100) {
+                //获得信息
+                String json = (String) msg.obj;
+                JSONObject jsonObject = new JSONObject();
+                int status = -100;
+                try {
+                    status = jsonObject.getInt("status");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (status == 1) {//注册成功
+                    //存储数据，结束activity
+                    SharedPreferences.Editor editor = getSharedPreferences("sp_login", MODE_PRIVATE).edit();
+                    editor.putString("username", etUserName.getText().toString());
+                    editor.putString("password", etPassword.getText().toString());
+                    editor.putString("login_time", System.currentTimeMillis() + "");
+                    editor.apply();
+
+
+                    Intent toGuideActivity = new Intent();
+                    toGuideActivity.setClass(RegisterActivity.this, GuideActivity.class);
+                    toGuideActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    toGuideActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(toGuideActivity);
+                } else if (status == -1) {
+                    //注册失败
+                    Toast.makeText(RegisterActivity.this, "用户名已存在", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+    };
 
 
     @Override
@@ -88,13 +132,15 @@ public class RegisterActivity extends FragmentActivity {
 
     private void startRegister(String phone, String username, String password) {
         toast("开始注册");
-        new Thread(new RegisterRunnable(phone, username, password)).start();
+        RegisterRunnable runnable = new RegisterRunnable(phone, username, password);
+        runnable.setHandler(handler);
+        new Thread(runnable).start();
     }
 
     private TitleBar.OnTitleClickListener listener = new TitleBar.OnTitleClickListener() {
         @Override
         public void onLeftClick() {
-
+            finish();
         }
 
         @Override

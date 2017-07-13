@@ -3,19 +3,24 @@ package com.logn.sbook.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
@@ -25,6 +30,7 @@ import android.widget.Toast;
 import com.logn.sbook.R;
 import com.logn.sbook.beans.BookInfo;
 import com.logn.sbook.util.BookAdapter;
+import com.logn.sbook.util.GetBookDataRunnable;
 import com.logn.sbook.util.viewPagerAdapter;
 import com.shizhefei.fragment.LazyFragment;
 
@@ -33,40 +39,55 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.os.Handler;
+
 /**
  * Created by banz on 2017/7/1.
  */
 
-public class viewPagerFragment extends LazyFragment{
+public class viewPagerFragment extends LazyFragment {
     public static final String INTENT_STRING_TABNAME = "intent_String_tabName";
-    public static final String KIND_OF_BOOK="intent_String_kindOfBook";
+    public static final String KIND_OF_BOOK = "intent_String_kindOfBook";
     private String tabName;
     private int position;
     private SearchView searchView;
     //    private ViewFlipper viewFlipper;
     private GridView gridView;
     //ViewPager
-    private View viewpager1,viewpager2;
+    private View viewpager1, viewpager2;
     private ViewPager viewPager;
     //创建list，保存获得的数据
-    private List<BookInfo> bookList=new ArrayList<>();
-    private String []kindsOfBooks=new String[]{
-            "计算机","小说","题库","考研","其他"
-    } ;
+    private List<BookInfo> bookList = new ArrayList<>();
+    private String[] kindsOfBooks = new String[]{
+            "计算机", "小说", "题库", "考研", "其他"
+    };
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-//    @Override
-//    protected View getPreviewLayout(LayoutInflater inflater, ViewGroup container) {
-//        return inflater.inflate(R.layout.layout_preview,container,false);
-//    }
+
+    private LinearLayout llSale, llSetting;
+    private Button btnLogin;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+            if (msg.what == 101) {
+                Toast.makeText(getContext(), "101:未获取到数据", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }else if(msg.what==100){
+                Toast.makeText(getContext(), "100:"+msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }
+    };
+
 
     @Override
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
-        tabName=getArguments().getString(INTENT_STRING_TABNAME);
+        tabName = getArguments().getString(INTENT_STRING_TABNAME);
 
-        if (tabName=="首页") {
+        if (tabName == "首页") {
             setContentView(R.layout.activity_main);
 
 
@@ -76,27 +97,93 @@ public class viewPagerFragment extends LazyFragment{
             implSwipeRefresh();
 
             //实现recyclerview
-            initBook();
+            //initBook();
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
             BookAdapter bookAdapter = new BookAdapter(getApplicationContext(), bookList);
             recyclerView.setAdapter(bookAdapter);
-        }else if (tabName=="我"){
+        } else if (tabName == "我") {
+
             setContentView(R.layout.activity_mine);
+
+            initView();
+
         }
 
     }
 
+    @Override
+    protected void onResumeLazy() {
+        super.onResumeLazy();
+        Log.e("resume", "update");
+        if (tabName == "我") {
+            updateView();
+        }
+    }
+
+    private void updateView() {
+        if (hasLogin()) {
+            setViewVisible(true);
+            btnLogin.setText("退出登录");
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences.Editor editor = getContext().getSharedPreferences("sp_login", Context.MODE_PRIVATE).edit();
+                    editor.clear();
+                    editor.apply();
+                }
+            });
+        } else {
+            setViewVisible(false);
+            btnLogin.setText("登录");
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent in = new Intent(getContext(), LoginActivity.class);
+                    startActivity(in);
+                }
+            });
+        }
+    }
+
+    private void initView() {
+
+        llSale = (LinearLayout) findViewById(R.id.ll_sale_mime);
+        llSetting = (LinearLayout) findViewById(R.id.ll_setting_mime);
+        btnLogin = (Button) findViewById(R.id.mime_login);
+
+    }
+
+    private void setViewVisible(boolean b) {
+        if (b) {
+            llSale.setClickable(true);
+            llSetting.setClickable(true);
+        } else {
+            llSale.setClickable(false);
+            llSetting.setClickable(false);
+        }
+    }
+
+
+    private boolean hasLogin() {
+        SharedPreferences sp = getContext().getSharedPreferences("sp_login", Context.MODE_PRIVATE);
+        String time = sp.getString("login_time", "0");
+        if (time.equals("0")) {
+            return false;
+        }
+        return true;
+    }
+
 
     //从后台数据库获取Book数据-首页
-    private void initBook(){
+    private void initBook() {
         //example for test
-        for (int i=0;i<5;i++){
-            BookInfo bookInfo=new BookInfo();
-            bookInfo.setAuthor("banz"+i);
+        for (int i = 0; i < 5; i++) {
+            BookInfo bookInfo = new BookInfo();
+            bookInfo.setAuthor("banz" + i);
             bookInfo.setBookImageId(R.drawable.displayview);
-            bookInfo.setBookName("2222"+i);
+            bookInfo.setBookName("2222" + i);
             bookInfo.setDate("2017.6.28");
             bookInfo.setNewPrice("8.00");
             bookInfo.setOldPrice("15.00");
@@ -112,9 +199,10 @@ public class viewPagerFragment extends LazyFragment{
             bookList.add(bookInfo);
         }
     }
+
     //搜索框-首页
-    public void implSearchView(){
-        searchView= (SearchView) findViewById(R.id.searchView);
+    public void implSearchView() {
+        searchView = (SearchView) findViewById(R.id.searchView);
         searchView.setIconifiedByDefault(false);
         searchView.setSubmitButtonEnabled(true);
 
@@ -132,23 +220,21 @@ public class viewPagerFragment extends LazyFragment{
     }
 
     //实现下拉刷新
-    public void implSwipeRefresh(){
-        swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.main_swipe_refresh);
+    public void implSwipeRefresh() {
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.cyan);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                Toast.makeText(getApplicationContext(),"正在刷新...",Toast.LENGTH_SHORT).show();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                swipeRefreshLayout.setRefreshing(false);
+
+                GetBookDataRunnable runnable = new GetBookDataRunnable();
+                runnable.setHandler(handler);
+                new Thread(runnable).start();
             }
         });
 //        swipeRefreshLayout.setRefreshing(false);
     }
+
     //Display自动播放图片
 //    public void autoPlay(){
 //        viewFlipper= (ViewFlipper) findViewById(R.id.displayView);
@@ -157,93 +243,54 @@ public class viewPagerFragment extends LazyFragment{
 //        viewFlipper.startFlipping();
 //    }
     //实现ViewPager-首页
-    public void displayWithViewPager(){
+    public void displayWithViewPager() {
         viewPagerAdapter viewPagerAdapter = new viewPagerAdapter();
-        viewPager= (ViewPager) findViewById(R.id.displayView);
+        viewPager = (ViewPager) findViewById(R.id.displayView);
 
-        viewpager1=inflater.inflate(R.layout.viewpager1,null);
-        viewpager2=inflater.inflate(R.layout.viewpager2,null);
-        viewPagerAdapter.viewList=new ArrayList<View>();
+        viewpager1 = inflater.inflate(R.layout.viewpager1, null);
+        viewpager2 = inflater.inflate(R.layout.viewpager2, null);
+        viewPagerAdapter.viewList = new ArrayList<View>();
         viewPagerAdapter.viewList.add(viewpager1);
         viewPagerAdapter.viewList.add(viewpager2);
         viewPager.setAdapter(viewPagerAdapter);
     }
 
-    //点击非编辑框退出键盘
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-//            View v = getCurrentFocus();
-//            if (isShouldHideInput(v, ev)) {
-//
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                if (imm != null) {
-//                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-//                }
-//            }
-//            return super.dispatchTouchEvent(ev);
-//        }
-//        // 必不可少，否则所有的组件都不会有TouchEvent了
-//        if (getWindow().superDispatchTouchEvent(ev)) {
-//            return true;
-//        }
-//        return onTouchEvent(ev);
-//    }
-//    public  boolean isShouldHideInput(View v, MotionEvent event) {
-//        if (v != null && (v instanceof EditText)) {
-//            int[] leftTop = { 0, 0 };
-//            //获取输入框当前的location位置
-//            v.getLocationInWindow(leftTop);
-//            int left = leftTop[0];
-//            int top = leftTop[1];
-//            int bottom = top + v.getHeight();
-//            int right = left + v.getWidth();
-//            if (event.getX() > left && event.getX() < right
-//                    && event.getY() > top && event.getY() < bottom) {
-//                // 点击的是输入框区域，保留点击EditText的事件
-//                return false;
-//            } else {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
     //GridView-书的分类-首页
-    public void kindsOfBooks(){
-        gridView= (GridView) findViewById(R.id.gridView);
-        int []imageIds=new int[]{
-                R.drawable.computer,R.drawable.novel,R.drawable.paperwork,
-                R.drawable.kaoyan,R.drawable.other
+    public void kindsOfBooks() {
+        gridView = (GridView) findViewById(R.id.gridView);
+        int[] imageIds = new int[]{
+                R.drawable.computer, R.drawable.novel, R.drawable.paperwork,
+                R.drawable.kaoyan, R.drawable.other
 
         };
 
-        ArrayList<HashMap<String,Object>> IsImageItem=new
+        ArrayList<HashMap<String, Object>> IsImageItem = new
                 ArrayList<HashMap<String, Object>>();
-        for (int i=0;i<imageIds.length;i++){
-            HashMap<String,Object>map=new HashMap<String,Object>();
-            map.put("ItemImage",imageIds[i]);
-            map.put("ItemText",kindsOfBooks[i]);
+        for (int i = 0; i < imageIds.length; i++) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("ItemImage", imageIds[i]);
+            map.put("ItemText", kindsOfBooks[i]);
             IsImageItem.add(map);
         }
 
-        SimpleAdapter simpleAdapter=new SimpleAdapter(getApplicationContext(),
-                IsImageItem,R.layout.item_gridview,
-                new String[]{"ItemImage","ItemText"},
-                new int[]{R.id.itemGridimage,R.id.itemGridText});
+        SimpleAdapter simpleAdapter = new SimpleAdapter(getApplicationContext(),
+                IsImageItem, R.layout.item_gridview,
+                new String[]{"ItemImage", "ItemText"},
+                new int[]{R.id.itemGridimage, R.id.itemGridText});
         gridView.setAdapter(simpleAdapter);
         gridView.setOnItemClickListener(new viewPagerFragment.ItemClickListener());
     }
 
     //实现gridView的点击事件-首页
-    class ItemClickListener implements AdapterView.OnItemClickListener{
+    class ItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent,
                                 View view, int position, long id) {
 //            Toast.makeText(getApplicationContext(),position+""
 //                    ,Toast.LENGTH_SHORT).show();
-            Intent intent=new Intent(getApplicationContext(),kindsOfBooksDetail.class);
-            intent.putExtra(KIND_OF_BOOK,kindsOfBooks[position]);
+            Intent intent = new Intent(getApplicationContext(), kindsOfBooksDetail.class);
+            intent.putExtra(KIND_OF_BOOK, kindsOfBooks[position]);
             startActivity(intent);
         }
     }

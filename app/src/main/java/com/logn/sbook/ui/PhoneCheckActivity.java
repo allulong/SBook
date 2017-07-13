@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.logn.sbook.R;
 import com.logn.sbook.util.EventInt;
+import com.logn.titlebar.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,6 +32,8 @@ import cn.smssdk.SMSSDK;
  */
 
 public class PhoneCheckActivity extends FragmentActivity {
+
+    private TitleBar titleBar;
 
     private EditText etPhone;
     private EditText etCheckCode;
@@ -95,7 +98,27 @@ public class PhoneCheckActivity extends FragmentActivity {
         getCode.setOnClickListener(btnListener);
         back.setOnClickListener(btnListener);
         next.setOnClickListener(btnListener);
+
+        titleBar = (TitleBar) findViewById(R.id.title_bar_phone_check);
+        titleBar.setOnTitleClickListener(titleClickListener);
     }
+
+    private TitleBar.OnTitleClickListener titleClickListener = new TitleBar.OnTitleClickListener() {
+        @Override
+        public void onLeftClick() {
+            finish();
+        }
+
+        @Override
+        public void onRightClick() {
+
+        }
+
+        @Override
+        public void onTitleClick() {
+
+        }
+    };
 
     private View.OnClickListener btnListener = new View.OnClickListener() {
         @Override

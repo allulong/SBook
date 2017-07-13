@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,6 +14,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -43,6 +46,7 @@ import com.logn.sbook.R;
 //import com.logn.sbook.beans.BookNature;
 import com.logn.sbook.gsonforbook.BookGson;
 import com.logn.sbook.util.HttpUtil;
+import com.logn.sbook.util.SendDateToServer;
 import com.logn.titlebar.TitleBar;
 import com.soundcloud.android.crop.Crop;
 
@@ -82,6 +86,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     private EditText editText_remark;
     private Button choose_kind;
     private Button choose_qulity;
+    private Button add_commit;
     TitleBar add_return;
 
     private static Dialog mCameraDialog;
@@ -95,6 +100,8 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     boolean Start_QRCode = false;
     private String QRCode_Result;
     boolean IsShowDialog = true;
+
+    private String requestBookImage;
 
     private String[] kindsBooks = new String[]{
             "计算机", "小说", "题库", "考研", "其他"
@@ -118,6 +125,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         imageButton_isbn_qrcode.setOnClickListener(this);
         choose_kind.setOnClickListener(this);
         choose_qulity.setOnClickListener(this);
+        add_commit.setOnClickListener(this);
     }
 
 //    public void initBookNature(){
@@ -145,6 +153,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         editText_remark = (EditText) findViewById(R.id.add_book_publisher);
         choose_kind = (Button) findViewById(R.id.add_book_kind);
         choose_qulity = (Button) findViewById(R.id.add_book_qulity);
+        add_commit= (Button) findViewById(R.id.add_commit);
 //        imageButton_return.setOnClickListener(this);
     }
 
@@ -207,8 +216,48 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
                 startActivityForResult(bookQulity, BOOK_QULITY);
                 Log.d("BOOKQULITY", "Launch chooseKindOrQulity----------");
                 break;
+            case R.id.add_commit:
+                sendToServer();
+
+                break;
 
         }
+    }
+    private Handler handler=new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case SendDateToServer.SEND_SUCCESS:
+                    Toast.makeText(AddActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                    break;
+                case SendDateToServer.SEND_FAIL:
+                    Toast.makeText(AddActivity.this,"上传失败",Toast.LENGTH_SHORT).show();
+                    break;
+
+            }
+        }
+    };
+    //提交数据
+    private void sendToServer(){
+        SendDateToServer toServer=new SendDateToServer(handler);
+        SharedPreferences preferences=getSharedPreferences("sp_login",MODE_PRIVATE);
+        String userName=preferences.getString("username","");
+        String isbn=editText_isbn.getText().toString();
+        String imageUrl= requestBookImage;
+        String bookName=editText_book_name.getText().toString();
+        String author=editText_book_author.getText().toString();
+        String publisher=editText_book_publisher.getText().toString();
+        String oldPrice=editText_book_oldprice.getText().toString();
+        String newPrice=editText_book_newprice.getText().toString();
+        String bookNumber=editText_book_number.getText().toString();
+        String kind=choose_kind.getText().toString();
+        String qulity=choose_qulity.getText().toString();
+        String remark=editText_remark.getText().toString();
+        toServer.SendDataToServer(userName,isbn,imageUrl,bookName,author,publisher,oldPrice,newPrice,
+                bookNumber,kind,qulity,remark);
+
     }
 
     //请求书籍JSON数据
@@ -284,62 +333,62 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    // 获取某位的ISBN字符---isbn10
-    private static int GetISBNAt(String isbn, int index, boolean xEnable) {
-        char[] c = isbn.substring(index, 1).toCharArray();
-
-        int n = c[0] - '0';
-
-        if (n < 0 || n > 9) {
-            if (xEnable && (c[0]== 'X' || c[0] == 'x')) {
-                n = 10;
-            }
-        }
-
-        return n;
-    }
-
-    // 检查ISBN号码--isbn10
-    // 7687687787
-    public static boolean CheckISBN10(String isbn) {
-        try {
-            int checkNum = 0;
-
-            if (isbn.length() == 10) {
-                int start = 10;
-
-                int total = 0;
-
-                for (int i = 0; i < isbn.length() - 1; ++i) {
-                    total += GetISBNAt(isbn, i, false) * start--;
-                }
-
-                checkNum = total % 11;
-
-                if (checkNum > 0) {
-                    checkNum = 11 - checkNum;
-                }
-            } else {
-                int total = 0;
-
-                for (int i = 0; i < isbn.length() - 1; ++i) {
-                    total += GetISBNAt(isbn, i, false) * (i % 2 == 0 ? 1 : 3);
-                }
-
-                checkNum = total % 10;
-
-                if (checkNum > 0) {
-                    checkNum = 10 - checkNum;
-                }
-            }
-
-            return GetISBNAt(isbn, isbn.length() - 1, true) == checkNum;
-        } catch (Exception e)
-        {
-            return false;
-        }
-
-    }
+//    // 获取某位的ISBN字符---isbn10
+//    private static int GetISBNAt(String isbn, int index, boolean xEnable) {
+//        char[] c = isbn.substring(index, 1).toCharArray();
+//
+//        int n = c[0] - '0';
+//
+//        if (n < 0 || n > 9) {
+//            if (xEnable && (c[0]== 'X' || c[0] == 'x')) {
+//                n = 10;
+//            }
+//        }
+//
+//        return n;
+//    }
+//
+//    // 检查ISBN号码--isbn10
+//    // 7687687787
+//    public static boolean CheckISBN10(String isbn) {
+//        try {
+//            int checkNum = 0;
+//
+//            if (isbn.length() == 10) {
+//                int start = 10;
+//
+//                int total = 0;
+//
+//                for (int i = 0; i < isbn.length() - 1; ++i) {
+//                    total += GetISBNAt(isbn, i, false) * start--;
+//                }
+//
+//                checkNum = total % 11;
+//
+//                if (checkNum > 0) {
+//                    checkNum = 11 - checkNum;
+//                }
+//            } else {
+//                int total = 0;
+//
+//                for (int i = 0; i < isbn.length() - 1; ++i) {
+//                    total += GetISBNAt(isbn, i, false) * (i % 2 == 0 ? 1 : 3);
+//                }
+//
+//                checkNum = total % 10;
+//
+//                if (checkNum > 0) {
+//                    checkNum = 10 - checkNum;
+//                }
+//            }
+//
+//            return GetISBNAt(isbn, isbn.length() - 1, true) == checkNum;
+//        } catch (Exception e)
+//        {
+//            return false;
+//        }
+//
+//    }
 
     //将解析的数据显示在界面中
     public void showBookInfoFromJSON(BookGson bookGson) {
@@ -383,7 +432,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
 
     //通过Glide加载图书封面
     public void loadBookImage(BookGson bookGson) {
-        final String requestBookImage = bookGson.images.large;
+        requestBookImage = bookGson.images.large;
         HttpUtil.sendOkHttpRequest(requestBookImage, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
