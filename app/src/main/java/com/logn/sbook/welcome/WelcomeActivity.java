@@ -9,6 +9,7 @@ import android.widget.ImageView;
 //import com.logn.sbook.MainActivity;
 import com.logn.sbook.R;
 import com.logn.sbook.ui.GuideActivity;
+import com.logn.sbook.ui.LoginActivity;
 import com.logn.sbook.ui.PhoneCheckActivity;
 
 /**
@@ -33,7 +34,7 @@ public class WelcomeActivity extends FragmentActivity {
         imageView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(WelcomeActivity.this, GuideActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

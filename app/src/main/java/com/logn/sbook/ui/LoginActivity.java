@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.logn.sbook.R;
+import com.logn.sbook.util.LoginRunnable;
 import com.logn.titlebar.TitleBar;
 
 /**
@@ -24,6 +26,7 @@ public class LoginActivity extends FragmentActivity {
     private EditText etPassword;
     private Button btn2register;
     private Button btnLogin;
+    private TextView tvForgetPassword;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +44,11 @@ public class LoginActivity extends FragmentActivity {
         etPassword = (EditText) findViewById(R.id.et_password_login);
         btn2register = (Button) findViewById(R.id.btn_2_register);
         btnLogin = (Button) findViewById(R.id.btn_login);
+        tvForgetPassword = (TextView) findViewById(R.id.tv_forget_password);
+
+        btnLogin.setOnClickListener(btnListner);
+        btn2register.setOnClickListener(btnListner);
+        tvForgetPassword.setOnClickListener(btnListner);
     }
 
     private View.OnClickListener btnListner = new View.OnClickListener() {
@@ -61,14 +69,16 @@ public class LoginActivity extends FragmentActivity {
                     }
                     login(username, password);
                     break;
+                case R.id.tv_forget_password:
+//                    Toast.makeText(LoginActivity.this, "暂未开通233", Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     };
 
     private void login(String username, String password) {
-
+        new Thread(new LoginRunnable(username, password)).start();
     }
-
 
     private TitleBar.OnTitleClickListener titleClickListener = new TitleBar.OnTitleClickListener() {
         @Override
