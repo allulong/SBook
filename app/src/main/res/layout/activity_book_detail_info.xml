@@ -119,92 +119,104 @@
                         android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginTop="2dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@mipmap/icon_time" />
+
                 <TextView
-                    android:layout_weight="1"
-                    android:layout_marginLeft="3dp"
+                    android:id="@+id/detail_book_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/detail_book_date"
-                    android:textColor="@color/gray"
-                    android:text="date"/>
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:text="date"
+                    android:textColor="@color/gray" />
+
                 <ImageView
-                    android:layout_marginTop="2dp"
-                    android:layout_marginLeft="30dp"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@mipmap/icon_level" />
+
                 <TextView
-                    android:layout_weight="1"
                     android:id="@+id/detail_qulity_book"
-                    android:text="qulity"
-                    android:layout_marginLeft="3dp"
-                    android:textColor="@color/gray"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:text="qulity"
+                    android:textColor="@color/gray" />
+
                 <ImageView
-                    android:layout_marginTop="2dp"
-                    android:layout_marginLeft="30dp"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@mipmap/icon_book_number" />
+
                 <TextView
-                    android:layout_weight="1"
                     android:id="@+id/detail_book_number"
-                    android:text="0"
-                    android:layout_marginLeft="3dp"
-                    android:textColor="@color/gray"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textColor="@color/gray" />
             </LinearLayout>
             <!--userInfo-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:gravity="center"
                 android:background="#eee"
+                android:gravity="center"
                 android:orientation="horizontal">
+
                 <ImageView
+                    android:id="@+id/mine_userimage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginLeft="20dp"
-                    android:id="@+id/mine_userimage"
-                    android:src="@drawable/displayview"/>
+                    android:src="@mipmap/icon_head_image" />
+
                 <LinearLayout
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:orientation="vertical">
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:id="@+id/detail_username"
-                        android:text="username"
-                        android:textColor="@color/black"/>
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
+                        android:text="张三"
+                        android:textColor="@color/black" />
+
+                    <TextView
                         android:id="@+id/detail_useraddress"
-                        android:text="useraddress"
-                        android:textColor="@color/black"/>
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
+                        android:text="中国"
+                        android:textColor="@color/black" />
+
+                    <TextView
                         android:id="@+id/detail_user_contact"
-                        android:text="QQ/123456"
-                        android:textColor="@color/black"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/contact"
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
 

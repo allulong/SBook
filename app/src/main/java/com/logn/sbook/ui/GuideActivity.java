@@ -35,6 +35,7 @@ public class GuideActivity extends FragmentActivity {
     private IndicatorViewPager indicatorViewPager;
     private View centerView;
     private FixedIndicatorView indicator;
+    private long formerTime = 0;
 
     //监听网络链接情况
     private IntentFilter intentFilter;
@@ -142,5 +143,17 @@ public class GuideActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(networkChangeReceiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        long presentTime = System.currentTimeMillis();
+        if ((presentTime - formerTime) > 2000) {
+            formerTime = presentTime;
+            Toast.makeText(this, "在按一次退出旧书店", Toast.LENGTH_SHORT).show();
+        } else {
+            finish();
+        }
     }
 }

@@ -25,6 +25,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private List<BookInfo> mBookList;
     Context context;
 
+    public void setmBookList(List<BookInfo> mBookList) {
+        this.mBookList = mBookList;
+    }
+
     public BookAdapter(Context context, List<BookInfo> bookInfoList) {
         this.context = context;
         mBookList = bookInfoList;
@@ -42,7 +46,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                 BookInfo bookInfo = mBookList.get(position);
 //                Toast.makeText(v.getContext(), bookInfo.getBookName() + "",
 //                        Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent("com.logn.sbook.ui.BookDetailInfo");
+                Intent intent = new Intent("com.logn.sbook.ui.BookDetailInfo");
                 intent.putExtra("bookInfo", (Serializable) bookInfo);
                 v.getContext().startActivity(intent);
             }
@@ -64,7 +68,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         holder.oldPrice.setText(bookInfo.getOldPrice());
         holder.date.setText(bookInfo.getDate());
         holder.qulity.setText(bookInfo.getQuality());
-
     }
 
     @Override

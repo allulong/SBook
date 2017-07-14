@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="@drawable/text_view_line"
     android:gravity="center"
     android:orientation="vertical"
     android:textSize="14sp" />

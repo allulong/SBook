@@ -32,7 +32,7 @@ public class BookDetailInfo extends AppCompatActivity {
 
         titleBar.setOnTitleClickListener(listener);
 
-        BookInfo bookInfo= (BookInfo) getIntent().getSerializableExtra("bookInfo");
+        BookInfo bookInfo = (BookInfo) getIntent().getSerializableExtra("bookInfo");
         detailUserContact.setText(bookInfo.getUserContact());
         detailUserAddress.setText(bookInfo.getUserAddress());
         detailUserName.setText(bookInfo.getUserName());
@@ -49,23 +49,23 @@ public class BookDetailInfo extends AppCompatActivity {
 
     }
 
-    public void initWdiget(){
-        titleBar= (TitleBar) findViewById(R.id.titlebar_book_info);
-        detailBookAuthor= (TextView) findViewById(R.id.detail_book_author);
-        detailBookImage= (ImageView) findViewById(R.id.detail_book_image);
-        detailBookName= (TextView) findViewById(R.id.detail_book_name);
-        detailBookPublisher= (TextView) findViewById(R.id.detail_book_publisher);
-        detailBookNewprice= (TextView) findViewById(R.id.detail_book_newprice);
-        detailBookOldprice= (TextView) findViewById(R.id.detail_book_oldprice);
-        detailBookDate= (TextView) findViewById(R.id.detail_book_date);
-        detailBookQulity= (TextView) findViewById(R.id.detail_qulity_book);
-        detailBookNumber= (TextView) findViewById(R.id.detail_book_number);
-        detailUserName= (TextView) findViewById(R.id.detail_username);
-        detailUserAddress= (TextView) findViewById(R.id.detail_useraddress);
-        detailUserContact= (TextView) findViewById(R.id.detail_user_contact);
+    public void initWdiget() {
+        titleBar = (TitleBar) findViewById(R.id.titlebar_book_info);
+        detailBookAuthor = (TextView) findViewById(R.id.detail_book_author);
+        detailBookImage = (ImageView) findViewById(R.id.detail_book_image);
+        detailBookName = (TextView) findViewById(R.id.detail_book_name);
+        detailBookPublisher = (TextView) findViewById(R.id.detail_book_publisher);
+        detailBookNewprice = (TextView) findViewById(R.id.detail_book_newprice);
+        detailBookOldprice = (TextView) findViewById(R.id.detail_book_oldprice);
+        detailBookDate = (TextView) findViewById(R.id.detail_book_date);
+        detailBookQulity = (TextView) findViewById(R.id.detail_qulity_book);
+        detailBookNumber = (TextView) findViewById(R.id.detail_book_number);
+        detailUserName = (TextView) findViewById(R.id.detail_username);
+        detailUserAddress = (TextView) findViewById(R.id.detail_useraddress);
+        detailUserContact = (TextView) findViewById(R.id.detail_user_contact);
     }
 
-    TitleBar.OnTitleClickListener listener=new TitleBar.OnTitleClickListener() {
+    TitleBar.OnTitleClickListener listener = new TitleBar.OnTitleClickListener() {
         @Override
         public void onLeftClick() {
             finish();

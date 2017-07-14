@@ -1,44 +1,35 @@
 package com.logn.sbook.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-//import com.logn.sbook.MainActivity;
 import com.logn.sbook.R;
 import com.logn.sbook.beans.BookInfo;
 import com.logn.sbook.util.BookAdapter;
 import com.logn.sbook.util.GetBookDataRunnable;
+import com.logn.sbook.util.SimpleItemDecoration;
 import com.logn.sbook.util.viewPagerAdapter;
 import com.shizhefei.fragment.LazyFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import android.os.Handler;
 
 /**
  * Created by banz on 2017/7/1.
@@ -55,11 +46,18 @@ public class viewPagerFragment extends LazyFragment {
     //ViewPager
     private View viewpager1, viewpager2;
     private ViewPager viewPager;
+
+    private RecyclerView recyclerView;
+    private BookAdapter bookAdapter;
     //创建list，保存获得的数据
     private List<BookInfo> bookList = new ArrayList<>();
     private String[] kindsOfBooks = new String[]{
             "计算机", "小说", "题库", "考研", "其他"
     };
+    private Context context;
+
+    private boolean loginStatus = false;
+    private int count = 0;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -72,24 +70,33 @@ public class viewPagerFragment extends LazyFragment {
         public void handleMessage(Message msg) {
 //            super.handleMessage(msg);
             if (msg.what == 101) {
-                Toast.makeText(getContext(), "101:未获取到数据", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "未获取到数据", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
-            }else if(msg.what==100){
-                Toast.makeText(getContext(), "100:"+msg.obj.toString(), Toast.LENGTH_SHORT).show();
+            } else if (msg.what == 100) {
+                String jsonData = msg.obj.toString();
+                Toast.makeText(context, "刷新成功" + jsonData, Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
+                List dataList = findData(jsonData);
+                bookAdapter.setmBookList(dataList);
+                recyclerView.notifyAll();
             }
         }
     };
+
+    private List findData(String jsonData) {
+        List<BookInfo> list = new ArrayList<>();
+        return null;
+    }
 
 
     @Override
     protected void onCreateViewLazy(Bundle savedInstanceState) {
         super.onCreateViewLazy(savedInstanceState);
         tabName = getArguments().getString(INTENT_STRING_TABNAME);
+        context = getContext();
 
         if (tabName == "首页") {
             setContentView(R.layout.activity_main);
-
 
             implSearchView();
             displayWithViewPager();
@@ -97,26 +104,22 @@ public class viewPagerFragment extends LazyFragment {
             implSwipeRefresh();
 
             //实现recyclerview
-            //initBook();
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+//            initBook();
+            recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(layoutManager);
-            BookAdapter bookAdapter = new BookAdapter(getApplicationContext(), bookList);
+            recyclerView.addItemDecoration(new SimpleItemDecoration(context, LinearLayoutManager.VERTICAL));
+            bookAdapter = new BookAdapter(context, bookList);
             recyclerView.setAdapter(bookAdapter);
         } else if (tabName == "我") {
-
             setContentView(R.layout.activity_mine);
-
             initView();
-
         }
-
     }
 
     @Override
     protected void onResumeLazy() {
         super.onResumeLazy();
-        Log.e("resume", "update");
         if (tabName == "我") {
             updateView();
         }
@@ -124,50 +127,92 @@ public class viewPagerFragment extends LazyFragment {
 
     private void updateView() {
         if (hasLogin()) {
-            setViewVisible(true);
-            btnLogin.setText("退出登录");
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SharedPreferences.Editor editor = getContext().getSharedPreferences("sp_login", Context.MODE_PRIVATE).edit();
-                    editor.clear();
-                    editor.apply();
-                }
-            });
+            if (count == 0) {
+                change2Login();
+            } else if (!loginStatus) {//如果未登录
+                change2Login();
+            }
         } else {
-            setViewVisible(false);
-            btnLogin.setText("登录");
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent in = new Intent(getContext(), LoginActivity.class);
-                    startActivity(in);
-                }
-            });
+            if (count == 0) {
+                change2Logout();
+            } else if (loginStatus) {
+                change2Logout();
+            }
         }
+        count++;
+    }
+
+    private void change2Login() {
+        loginStatus = true;
+        setEntry(true);
+        btnLogin.setText("退出登录");
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = context
+                        .getSharedPreferences("sp_login", Context.MODE_PRIVATE).edit();
+                editor.clear();
+                editor.apply();
+                change2Logout();
+            }
+        });
+    }
+
+    private void change2Logout() {
+        loginStatus = false;
+        setEntry(false);
+        btnLogin.setText("登录");
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent login = new Intent(context, LoginActivity.class);
+                startActivity(login);
+            }
+        });
     }
 
     private void initView() {
-
         llSale = (LinearLayout) findViewById(R.id.ll_sale_mime);
         llSetting = (LinearLayout) findViewById(R.id.ll_setting_mime);
         btnLogin = (Button) findViewById(R.id.mime_login);
-
     }
 
-    private void setViewVisible(boolean b) {
-        if (b) {
-            llSale.setClickable(true);
-            llSetting.setClickable(true);
+    private void setEntry(boolean login) {
+        if (login) {
+            View.OnClickListener btnListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.ll_sale_mime:
+                            Toast.makeText(context, "待售物品", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.ll_setting_mime:
+                            Intent intent = new Intent();
+                            intent.setClass(context, SettingActivity.class);
+                            startActivity(intent);
+                            break;
+                    }
+                }
+            };
+
+            llSale.setOnClickListener(btnListener);
+            llSetting.setOnClickListener(btnListener);
         } else {
-            llSale.setClickable(false);
-            llSetting.setClickable(false);
+            View.OnClickListener btnListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "请登录", Toast.LENGTH_SHORT).show();
+                }
+            };
+
+            llSale.setOnClickListener(btnListener);
+            llSetting.setOnClickListener(btnListener);
         }
     }
 
 
     private boolean hasLogin() {
-        SharedPreferences sp = getContext().getSharedPreferences("sp_login", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences("sp_login", Context.MODE_PRIVATE);
         String time = sp.getString("login_time", "0");
         if (time.equals("0")) {
             return false;
@@ -182,15 +227,15 @@ public class viewPagerFragment extends LazyFragment {
         for (int i = 0; i < 5; i++) {
             BookInfo bookInfo = new BookInfo();
             bookInfo.setAuthor("banz" + i);
-            bookInfo.setBookImageId(R.drawable.displayview);
-            bookInfo.setBookName("2222" + i);
+            bookInfo.setBookImageId(R.mipmap.icon_book_lock);
+            bookInfo.setBookName("哈利波特" + i);
             bookInfo.setDate("2017.6.28");
             bookInfo.setNewPrice("8.00");
             bookInfo.setOldPrice("15.00");
             bookInfo.setQuality("9");
             bookInfo.setUserAddress("SSDUT");
-            bookInfo.setSexImageId(R.mipmap.ic_launcher);
-            bookInfo.setUserImageId(R.mipmap.ic_launcher);
+            bookInfo.setSexImageId(Math.random() > 0.5 ? R.mipmap.icon_male : R.mipmap.icon_female);
+            bookInfo.setUserImageId(R.mipmap.icon_head_image);
             bookInfo.setUserName("banz");
             bookInfo.setISBN(000000);
             bookInfo.setPublisher("SSDUT");
@@ -261,7 +306,6 @@ public class viewPagerFragment extends LazyFragment {
         int[] imageIds = new int[]{
                 R.drawable.computer, R.drawable.novel, R.drawable.paperwork,
                 R.drawable.kaoyan, R.drawable.other
-
         };
 
         ArrayList<HashMap<String, Object>> IsImageItem = new
@@ -273,7 +317,7 @@ public class viewPagerFragment extends LazyFragment {
             IsImageItem.add(map);
         }
 
-        SimpleAdapter simpleAdapter = new SimpleAdapter(getApplicationContext(),
+        SimpleAdapter simpleAdapter = new SimpleAdapter(context,
                 IsImageItem, R.layout.item_gridview,
                 new String[]{"ItemImage", "ItemText"},
                 new int[]{R.id.itemGridimage, R.id.itemGridText});
@@ -287,9 +331,7 @@ public class viewPagerFragment extends LazyFragment {
         @Override
         public void onItemClick(AdapterView<?> parent,
                                 View view, int position, long id) {
-//            Toast.makeText(getApplicationContext(),position+""
-//                    ,Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), kindsOfBooksDetail.class);
+            Intent intent = new Intent(context, kindsOfBooksDetail.class);
             intent.putExtra(KIND_OF_BOOK, kindsOfBooks[position]);
             startActivity(intent);
         }

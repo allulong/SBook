@@ -25,7 +25,6 @@ public class LoginRunnable implements Runnable {
 
     private String urlStr;
 
-
     private Handler handler;
 
     public LoginRunnable(String username, String password) {
@@ -59,18 +58,13 @@ public class LoginRunnable implements Runnable {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);
-            int code = connection.getResponseCode();
-            if (code == 200) {
-                InputStream is = connection.getInputStream();
-                String json = HttpUtils.getStrFromIS(is);
-                Message msg = new Message();
-                if (handler != null) {
-                    msg.obj = json;
-                    msg.what = msgCode;
-                    handler.sendMessage(msg);
-                }
-            } else {
-                Log.e("...", "nothing");
+            InputStream is = connection.getInputStream();
+            String json = HttpUtils.getStrFromIS(is);
+            Message msg = new Message();
+            if (handler != null) {
+                msg.obj = json;
+                msg.what = msgCode;
+                handler.sendMessage(msg);
             }
         } catch (IOException e) {
             e.printStackTrace();

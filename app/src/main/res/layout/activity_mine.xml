@@ -22,7 +22,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/displayview" />
+                android:src="@mipmap/icon_head_image" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="username"
+                    android:text="姓名"
                     android:textColor="@color/white" />
 
                 <TextView
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="useraddress"
+                    android:text="地址"
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/icon_sale" />
 
             <TextView
                 android:layout_width="0dp"
@@ -69,15 +69,15 @@
                 android:layout_weight="8"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
-                android:text="出售"
-                android:textColor="@color/black"
+                android:text="出售(0)"
+                android:textColor="@color/gray"
                 android:textSize="22sp" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/icon_next" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,7 +91,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/icon_setting" />
 
             <TextView
                 android:layout_width="0dp"
@@ -100,14 +100,14 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
                 android:text="设置"
-                android:textColor="@color/black"
+                android:textColor="@color/gray"
                 android:textSize="22sp" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/icon_next" />
         </LinearLayout>
 
 

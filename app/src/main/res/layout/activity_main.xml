@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="40dp"-->
-    <!--android:background="@color/cyan"-->
-    <!--android:focusableInTouchMode="true">-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
-        <!--<com.logn.titlebar.TitleBar-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:background="@color/cyan">-->
+
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
@@ -28,16 +20,11 @@
             android:background="@color/cyan"
             android:gravity="center_vertical"
             android:queryHint="书名" />
-        <!--</com.logn.titlebar.TitleBar>-->
-        <!--</LinearLayout>-->
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--scrollview-->
+
         <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/main_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/main_swipe_refresh">
+            android:layout_height="match_parent">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -55,20 +42,31 @@
                         android:flipInterval="5000"></android.support.v4.view.ViewPager>
 
                     <GridView
-                        android:layout_marginTop="10dp"
                         android:id="@+id/gridView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:horizontalSpacing="1pt"
                         android:numColumns="5"
                         android:verticalSpacing="1pt"></GridView>
 
-                    <android.support.v7.widget.RecyclerView
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_item_show"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="12dp"
+                        android:text="最新发布"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp">
 
                     </android.support.v7.widget.RecyclerView>
 

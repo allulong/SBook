@@ -2,8 +2,11 @@ package com.logn.sbook.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 import com.logn.sbook.R;
 import com.logn.sbook.util.LoginRunnable;
 import com.logn.titlebar.TitleBar;
+
 
 /**
  * Created by long on 2017/7/12.
@@ -27,6 +31,16 @@ public class LoginActivity extends FragmentActivity {
     private Button btn2register;
     private Button btnLogin;
     private TextView tvForgetPassword;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 200) {
+                String json = msg.obj.toString();
+                Log.e("login", json);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +91,9 @@ public class LoginActivity extends FragmentActivity {
     };
 
     private void login(String username, String password) {
-        new Thread(new LoginRunnable(username, password)).start();
+        LoginRunnable runnable = new LoginRunnable(username, password);
+        runnable.setHandler(handler);
+        new Thread(runnable).start();
     }
 
     private TitleBar.OnTitleClickListener titleClickListener = new TitleBar.OnTitleClickListener() {
