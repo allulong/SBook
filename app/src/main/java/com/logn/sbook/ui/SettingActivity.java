@@ -1,18 +1,21 @@
 package com.logn.sbook.ui;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.logn.sbook.R;
+import com.logn.sbook.util.SpUtils;
+import com.logn.sbook.util.SpValue;
 
 public class SettingActivity extends AppCompatActivity {
 
-    private LinearLayout headImage, adderess, sex, changePassword, contact;
+    private LinearLayout headImage, detailInfo, changeInfo, changePassword;
     private TextView version;
     private Button btnLogout;
 
@@ -26,18 +29,16 @@ public class SettingActivity extends AppCompatActivity {
 
     private void initView() {
         headImage = (LinearLayout) findViewById(R.id.setting_head_image);
-        adderess = (LinearLayout) findViewById(R.id.setting_address);
-        sex = (LinearLayout) findViewById(R.id.setting_sex);
+        detailInfo = (LinearLayout) findViewById(R.id.setting_detail_info);
+        changeInfo = (LinearLayout) findViewById(R.id.setting_change_info);
         changePassword = (LinearLayout) findViewById(R.id.setting_change_password);
-        contact = (LinearLayout) findViewById(R.id.setting_contact);
         version = (TextView) findViewById(R.id.setting_tv_version);
         btnLogout = (Button) findViewById(R.id.setting_btn_logout);
 
         headImage.setOnClickListener(listener);
-        adderess.setOnClickListener(listener);
-        sex.setOnClickListener(listener);
+        detailInfo.setOnClickListener(listener);
+        changeInfo.setOnClickListener(listener);
         changePassword.setOnClickListener(listener);
-        contact.setOnClickListener(listener);
         version.setOnClickListener(listener);
         btnLogout.setOnClickListener(listener);
     }
@@ -45,18 +46,25 @@ public class SettingActivity extends AppCompatActivity {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Intent intent = new Intent();
             switch (v.getId()) {
                 case R.id.setting_head_image:
                     break;
-                case R.id.setting_address:
+                case R.id.setting_detail_info:
+                    intent.putExtra(SpValue.infoType, SpValue.address);
+                    intent.setClass(SettingActivity.this, PersonalInfoActivity.class);
+                    startActivity(intent);
                     break;
-                case R.id.setting_sex:
+                case R.id.setting_change_info:
+                    intent.putExtra(SpValue.infoType, SpValue.key_sex);
+                    intent.setClass(SettingActivity.this, InfoSettingActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.setting_change_password:
-                    break;
-                case R.id.setting_contact:
+                    Toast.makeText(SettingActivity.this, "修改密码", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.setting_tv_version:
+                    Toast.makeText(SettingActivity.this, "已是最新版本", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.setting_btn_logout:
                     logout();
@@ -66,9 +74,7 @@ public class SettingActivity extends AppCompatActivity {
     };
 
     private void logout() {
-        SharedPreferences.Editor editor = getSharedPreferences("sp_login", MODE_PRIVATE).edit();
-        editor.clear();
-        editor.apply();
+        SpUtils.clear(SettingActivity.this);
         finish();
     }
 }

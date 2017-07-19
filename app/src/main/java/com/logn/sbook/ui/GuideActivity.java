@@ -1,18 +1,13 @@
 package com.logn.sbook.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +17,8 @@ import android.widget.Toast;
 
 import com.logn.sbook.R;
 import com.logn.sbook.util.NetworkChangeReceiver;
+import com.logn.sbook.util.SpUtils;
+import com.logn.sbook.util.SpValue;
 import com.shizhefei.view.indicator.FixedIndicatorView;
 import com.shizhefei.view.indicator.IndicatorViewPager;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
@@ -84,8 +81,7 @@ public class GuideActivity extends FragmentActivity {
     };
 
     private boolean hasLogin() {
-        SharedPreferences sp = getSharedPreferences("sp_login", Context.MODE_PRIVATE);
-        String time = sp.getString("login_time", "0");
+        String time = SpUtils.get(GuideActivity.this, SpValue.key_login_time, "0");
         if (time.equals("0")) {
             return false;
         }

@@ -13,9 +13,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.logn.sbook.R;
 import com.logn.sbook.util.LoginRunnable;
+import com.logn.sbook.util.SpUtils;
+import com.logn.sbook.util.SpValue;
+import com.logn.sbook.util.StatusData;
 import com.logn.titlebar.TitleBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -32,15 +40,61 @@ public class LoginActivity extends FragmentActivity {
     private Button btnLogin;
     private TextView tvForgetPassword;
 
+    private String username;
+    private String password;
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == 200) {
+            if (msg.what == 100) {
                 String json = msg.obj.toString();
                 Log.e("login", json);
+                checkJson(json);
             }
         }
     };
+
+    private void checkJson(String json) {
+        JSONObject jsonObject = null;
+        int status = -100;
+        String msg = null;
+//        try {
+//            jsonObject = new JSONObject(json);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            status = jsonObject.getInt("status");
+//            Log.e("status", "" + status);
+//            msg = jsonObject.getString("msg");
+//            Log.e("msg", "" + msg);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//            Log.e("msg", "error");
+//        }
+        Gson gson = new GsonBuilder().create();
+        StatusData data = gson.fromJson(json, StatusData.class);
+        status = data.getStatus();
+
+        switch (status) {
+            case 200:
+                Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
+                SpUtils.put(LoginActivity.this, SpValue.key_username, username);
+                SpUtils.put(LoginActivity.this, SpValue.key_password, password);
+                SpUtils.put(LoginActivity.this, SpValue.key_login_time, System.currentTimeMillis() + "");
+                finish();
+                break;
+            case 3:
+                Toast.makeText(this, "账号不存在", Toast.LENGTH_SHORT).show();
+                break;
+            case 4:
+                Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(this, "未知错误", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +145,8 @@ public class LoginActivity extends FragmentActivity {
     };
 
     private void login(String username, String password) {
+        this.username = username;
+        this.password = password;
         LoginRunnable runnable = new LoginRunnable(username, password);
         runnable.setHandler(handler);
         new Thread(runnable).start();

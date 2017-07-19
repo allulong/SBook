@@ -53,7 +53,7 @@
     <include layout="@layout/item_line" />
 
     <LinearLayout
-        android:id="@+id/setting_address"
+        android:id="@+id/setting_detail_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_click"
@@ -65,7 +65,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="地址"
+            android:text="详细信息"
             android:textColor="@color/gray" />
 
         <ImageView
@@ -78,7 +78,7 @@
     <include layout="@layout/item_line" />
 
     <LinearLayout
-        android:id="@+id/setting_sex"
+        android:id="@+id/setting_change_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_click"
@@ -90,7 +90,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="性别"
+            android:text="修改信息"
             android:textColor="@color/gray" />
 
         <ImageView
@@ -127,30 +127,6 @@
 
     <include layout="@layout/item_line" />
 
-    <LinearLayout
-        android:id="@+id/setting_contact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/item_click"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="联系方式"
-            android:textColor="@color/gray" />
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:src="@mipmap/icon_next" />
-    </LinearLayout>
-
-    <include layout="@layout/item_line" />
 
     <View
         android:layout_width="match_parent"

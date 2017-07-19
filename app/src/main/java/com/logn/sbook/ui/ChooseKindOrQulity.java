@@ -23,32 +23,31 @@ import java.util.List;
 public class ChooseKindOrQulity extends FragmentActivity {
     TitleBar titleBar;
     private ListView listView;
-//    private List<BookNature> BookInfoArr;
+    //    private List<BookNature> BookInfoArr;
     private String[] BookInfoArr;
-    public static String item=null;
+    public static String item = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_choose_kind_qulity);
-        Log.d("CHOOSEKINDQULITY","Launch success------");
-        titleBar= (TitleBar) findViewById(R.id.choose_kind_qulity);
-        listView= (ListView) findViewById(R.id.listview_kind_qulity);
+        Log.d("CHOOSEKINDQULITY", "Launch success------");
+        titleBar = (TitleBar) findViewById(R.id.choose_kind_qulity);
+        listView = (ListView) findViewById(R.id.listview_kind_qulity);
 
-        BookInfoArr= getIntent().getStringArrayExtra("BookInfo");
-        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(
-                ChooseKindOrQulity.this,android.R.layout.simple_list_item_1,BookInfoArr);
-
+        BookInfoArr = getIntent().getStringArrayExtra("BookInfo");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                ChooseKindOrQulity.this, R.layout.item_list, BookInfoArr);
 
         listView.setAdapter(arrayAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                item= BookInfoArr[position];
-                Intent Bookitem=new Intent();
-                Bookitem.putExtra("BookItem",item);
-                setResult(0,Bookitem);
+                item = BookInfoArr[position];
+                Intent Bookitem = new Intent();
+                Bookitem.putExtra("BookItem", item);
+                setResult(0, Bookitem);
                 finish();
             }
         });
@@ -56,9 +55,19 @@ public class ChooseKindOrQulity extends FragmentActivity {
 
 
     }
-    TitleBar.OnTitleClickListener listener=new TitleBar.OnTitleClickListener() {
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
+    TitleBar.OnTitleClickListener listener = new TitleBar.OnTitleClickListener() {
         @Override
         public void onLeftClick() {
+            item = BookInfoArr[0];
+            Intent bookitem = new Intent();
+            bookitem.putExtra("BookItem", item);
+            setResult(0, bookitem);
             finish();
         }
 

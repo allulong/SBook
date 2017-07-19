@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
 
@@ -35,6 +36,9 @@
         <activity android:name=".ui.PhoneCheckActivity" />
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.InfoSettingActivity" />
+        <activity android:name=".ui.ContactInfoActivity" />
+        <activity android:name=".ui.PersonalInfoActivity" />
 
 
         <activity
@@ -72,7 +76,7 @@
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".ui.SettingActivity"></activity>
-        <activity android:name=".ui.ChooseKindOrQulity"/>
+        <activity android:name=".ui.ChooseKindOrQulity" />
 
     </application>
 

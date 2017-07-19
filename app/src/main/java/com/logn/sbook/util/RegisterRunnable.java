@@ -67,19 +67,15 @@ public class RegisterRunnable implements Runnable {
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);
             int code = connection.getResponseCode();
-            if (code == 200) {
-                InputStream is = connection.getInputStream();
-                String json = HttpUtils.getStrFromIS(is);
-                Message msg = new Message();
-                if (handler != null) {
-                    msg.obj = json;
-                    msg.what = msgCode;
-                    handler.sendMessage(msg);
-                }
-                Log.e(code + "获得了JSON：", json);
-            } else {
-                Log.e("...", "nothing");
+            InputStream is = connection.getInputStream();
+            String json = HttpUtils.getStrFromIS(is);
+            Message msg = new Message();
+            if (handler != null) {
+                msg.obj = json;
+                msg.what = msgCode;
+                handler.sendMessage(msg);
             }
+            Log.e(code + "获得了JSON：", json);
         } catch (IOException e) {
             e.printStackTrace();
         }

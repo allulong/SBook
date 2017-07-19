@@ -2,17 +2,17 @@ package com.logn.sbook.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.logn.sbook.R;
 import com.logn.sbook.beans.BookInfo;
-import com.logn.sbook.ui.BookDetailInfo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -61,14 +61,23 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         holder.userSex.setImageResource(bookInfo.getSexImageId());
         holder.userImage.setImageResource(bookInfo.getUserImageId());
         holder.userAddress.setText(bookInfo.getUserAddress());
-        holder.bookImage.setImageResource(bookInfo.getBookImageId());
+
         holder.bookName.setText(bookInfo.getBookName());
         holder.author.setText(bookInfo.getAuthor());
         holder.newPrice.setText(bookInfo.getNewPrice());
         holder.oldPrice.setText(bookInfo.getOldPrice());
         holder.date.setText(bookInfo.getDate());
         holder.qulity.setText(bookInfo.getQuality());
+
+        Bitmap bitmap;
+        if ((bitmap = FileUtil.getBitmap(bookInfo.getBookName())) != null) {
+            Log.e("bitmap", "" + bitmap);
+            holder.bookImage.setImageBitmap(bitmap);
+        } else {
+            holder.bookImage.setImageResource(bookInfo.getBookImageId());
+        }
     }
+
 
     @Override
     public int getItemCount() {

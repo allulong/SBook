@@ -1,43 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eee"
     android:orientation="vertical">
-    <!--Tab-->
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="40dp"-->
-        <!--android:background="@color/cyan"-->
-        <!--android:orientation="horizontal">-->
 
-        <!--<ImageButton-->
-            <!--android:layout_marginTop="7dp"-->
-            <!--android:id="@+id/button_return"-->
-            <!--android:layout_width="25dp"-->
-            <!--android:layout_height="25dp"-->
-            <!--android:layout_marginLeft="7dp"-->
-            <!--android:background="@color/cyan"-->
-            <!--android:src="@drawable/addreturn"/>-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginLeft="20dp"-->
-            <!--android:text="出售书籍"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:textSize="20sp" />-->
-    <!--</LinearLayout>-->
     <com.logn.titlebar.TitleBar
         android:id="@+id/add_titlebar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/cyan"
         app:leftButtonBackground="@drawable/addreturn"
-        app:titleBarText="出售书籍"
-        ></com.logn.titlebar.TitleBar>
+        app:titleBarText="出售书籍"></com.logn.titlebar.TitleBar>
     <!--ISBN-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,21 +29,21 @@
             android:textSize="15sp" />
 
         <EditText
-            android:textColor="@color/black"
             android:id="@+id/isbn_edit"
-            android:inputType="number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:hint="请直接输入或点击右侧图标扫描"
+            android:inputType="number"
+            android:textColor="@color/black"
             android:textColorHint="@color/gray" />
 
         <ImageButton
             android:id="@+id/isbn_search"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
             android:background="@color/white"
             android:src="@drawable/isbn_search_pressed" />
 
@@ -76,8 +51,8 @@
             android:id="@+id/isbn_qrcode"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="15dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
             android:background="@color/white"
             android:src="@drawable/isbn_qrcode_pressed" />
     </LinearLayout>
@@ -97,6 +72,7 @@
             android:layout_height="150dp"
             android:background="#eee"
             android:padding="5dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/defaultcover" />
 
 
@@ -107,166 +83,187 @@
 
             <EditText
                 android:id="@+id/add_book_name"
-                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:gravity="center_vertical"
-                android:singleLine="true"
                 android:hint="书名"
+                android:singleLine="true"
+                android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="15sp" />
             <!--分割线-->
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:src="@drawable/strightline"/>
+                android:src="@drawable/strightline" />
+
             <EditText
                 android:id="@+id/add_book_author"
                 android:layout_width="match_parent"
-                android:textColor="@color/black"
                 android:layout_height="37dp"
                 android:gravity="center_vertical"
                 android:hint="作者"
+                android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="15sp" />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:src="@drawable/strightline"/>
+                android:src="@drawable/strightline" />
+
             <EditText
                 android:id="@+id/add_book_publisher"
                 android:layout_width="match_parent"
-                android:textColor="@color/black"
                 android:layout_height="37dp"
                 android:gravity="center_vertical"
                 android:hint="出版社"
+                android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="15sp" />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:src="@drawable/strightline"/>
+                android:src="@drawable/strightline" />
+
             <EditText
                 android:id="@+id/add_book_oldprice"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:gravity="center_vertical"
-                android:textColor="@color/black"
                 android:hint="原价"
                 android:inputType="number"
+                android:textColor="@color/black"
                 android:textColorHint="@color/gray"
                 android:textSize="15sp" />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:src="@drawable/strightline"/>
+                android:src="@drawable/strightline" />
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp">
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="出售价："
-                android:textColor="@color/black"
-                android:gravity="center_vertical"/>
+                android:textColor="@color/black" />
+
             <EditText
+                android:id="@+id/add_book_newprice"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:textColor="@color/black"
-                android:textSize="15sp"
+                android:gravity="center_vertical"
                 android:inputType="number"
-                android:id="@+id/add_book_newprice"
-                android:gravity="center_vertical"/>
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
             <TextView
                 android:id="@+id/text_number"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="数量："
-                android:textColor="@color/black"
-                android:gravity="center_vertical"/>
+                android:textColor="@color/black" />
+
             <EditText
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:inputType="number"
                 android:id="@+id/add_book_number"
-                android:gravity="center_vertical"/>
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="分    类："
-                android:textColor="@color/black"
-                android:gravity="center_vertical"/>
+                android:textColor="@color/black" />
+
             <Button
-                android:background="@color/white"
-                android:hint="点击选择分类"
-                android:textColorHint="@color/gray"
+                android:id="@+id/add_book_kind"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center"
+                android:hint="点击选择分类"
                 android:textColor="@color/black"
-                android:id="@+id/add_book_kind"
-                android:gravity="center"/>
+                android:textColorHint="@color/gray" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="新旧："
-                android:textColor="@color/black"
-                android:gravity="center_vertical" />
+                android:textColor="@color/black" />
+
             <Button
-                android:background="@color/white"
-                android:textColorHint="@color/gray"
-                android:hint="点击选择新旧"
+                android:id="@+id/add_book_qulity"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center"
+                android:hint="点击选择新旧"
                 android:textColor="@color/black"
-                android:id="@+id/add_book_qulity"
-                android:gravity="center"/>
+                android:textColorHint="@color/gray" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="联系方式："
-                android:textColor="@color/black"
-                android:gravity="center_vertical"/>
+                android:textColor="@color/black" />
+
             <EditText
-                android:hint="如微信／123456"
+                android:id="@+id/add_user_contact"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/black"
-                android:id="@+id/add_user_contact"
                 android:gravity="center_vertical"
+                android:hint="留下你的联系方式，方便他人联系"
+                android:textColor="@color/black"
                 android:textColorHint="@color/gray"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
         </LinearLayout>
 
     </LinearLayout>
+
     <Button
         android:id="@+id/add_commit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="发布"
         android:background="@color/cyan"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="发布" />
 
 </LinearLayout>

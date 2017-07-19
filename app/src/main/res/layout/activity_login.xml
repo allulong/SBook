@@ -13,7 +13,7 @@
         android:background="@color/cyan"
         app:leftText="返回"
         app:titleBarColor="#fff"
-        app:titleBarText="注册">
+        app:titleBarText="登录">
 
     </com.logn.titlebar.TitleBar>
 
@@ -29,6 +29,7 @@
         android:layout_margin="22dp"
         android:background="@drawable/edit_bg"
         android:hint="用户名"
+        android:textColor="@color/gray"
         android:textColorHint="@color/gray" />
 
     <EditText
@@ -39,6 +40,7 @@
         android:background="@drawable/edit_bg"
         android:hint="密码"
         android:inputType="textPassword"
+        android:textColor="@color/gray"
         android:textColorHint="@color/gray" />
 
     <LinearLayout

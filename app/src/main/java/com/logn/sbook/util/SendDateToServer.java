@@ -1,13 +1,18 @@
 package com.logn.sbook.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 
 /**
  * Created by Vivian on 2017/7/13.
@@ -44,6 +49,10 @@ public class SendDateToServer {
         map.put("kind", kind);
         map.put("qulity", qulity);
         map.put("remark", remark);
+
+        String time = TimeUtils.getTimeWithLong(System.currentTimeMillis());
+        map.put("create_time", time);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -66,38 +75,64 @@ public class SendDateToServer {
     /**
      * 发送POST请求
      *
-     * @param param 请求参数
-     * @param url   请求路径
+     * @param param  请求参数
+     * @param urlStr 请求路径
      * @return
      * @throws Exception
      */
-    private boolean sendPostRequest(Map<String, String> param, String url, String encoding) throws Exception {
+    private boolean sendPostRequest(Map<String, String> param, String urlStr, String encoding) throws Exception {
         // TODO Auto-generated method stub
         //http://10.219.61.117:8080/ServerForPOSTMethod/ServletForPOSTMethod?name=aa&pwd=124
-        StringBuffer sb = new StringBuffer(url);
-        if (!url.equals("") & !param.isEmpty()) {
+        StringBuffer sb = new StringBuffer(urlStr);
+        if (!urlStr.equals("") & !param.isEmpty()) {
             sb.append("?");
             sb.append("app_id=cmkajd8733nb4hd3092jn&");
             for (Map.Entry<String, String> entry : param.entrySet()) {
                 sb.append(entry.getKey() + "=");
                 sb.append(URLEncoder.encode(entry.getValue(), encoding));
+//                sb.append(entry.getValue());
                 sb.append("&");
             }
             sb.deleteCharAt(sb.length() - 1);//删除字符串最后 一个字符“&”
         }
-        byte[] data = sb.toString().getBytes();
-        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-        conn.setConnectTimeout(5000);
-        conn.setRequestMethod("POST");//设置请求方式为POST
-        conn.setDoOutput(true);//允许对外传输数据
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");// 设置窗体数据编码为名称/值对
-        conn.setRequestProperty("Content-Length", data.length + "");
-        OutputStream outputStream = conn.getOutputStream();//打开服务器的输入流
-        outputStream.write(data);//将数据写入到服务器的输出流
-        outputStream.flush();
-        if (conn.getResponseCode() == 200) {
-            return true;
+        urlStr = sb.toString();
+//        urlStr = SpaceUtils.replaceSpace(urlStr);
+        Log.e("mapdata:", urlStr);
+//        byte[] data = sb.toString().getBytes();
+//        HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
+//        conn.setConnectTimeout(5000);
+//        conn.setRequestMethod("POST");//设置请求方式为POST
+//        conn.setDoOutput(true);//允许对外传输数据
+//        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");// 设置窗体数据编码为名称/值对
+//        conn.setRequestProperty("Content-Length", data.length + "");
+//        OutputStream outputStream = conn.getOutputStream();//打开服务器的输入流
+//        outputStream.write(data);//将数据写入到服务器的输出流
+//        outputStream.flush();
+        URL url = null;
+        try {
+            url = new URL(urlStr);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
-        return false;
+        Log.e("url_book", url.toString());
+        try {
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(5000);
+            int code = connection.getResponseCode();
+            InputStream is = connection.getInputStream();
+            String json = HttpUtils.getStrFromIS(is);
+            Message msg = new Message();
+            if (handler != null) {
+                msg.obj = json;
+                msg.what = 100;
+                handler.sendMessage(msg);
+            }
+            Log.e(code + "发布-获得了JSON：", json);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

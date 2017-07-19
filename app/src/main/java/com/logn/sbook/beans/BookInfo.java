@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by oureda on 2017/6/28.
  */
 
-public class BookInfo implements Serializable{
+public class BookInfo implements Serializable {
     private int id;
     private int userId;
     private long ISBN;
@@ -24,6 +24,17 @@ public class BookInfo implements Serializable{
     private String publisher;
     private String bookNumber;
     private String userContact;
+
+    //增加一个字段
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getUserContact() {
         return userContact;

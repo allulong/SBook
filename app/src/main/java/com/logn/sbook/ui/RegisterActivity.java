@@ -1,7 +1,6 @@
 package com.logn.sbook.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +13,8 @@ import android.widget.Toast;
 
 import com.logn.sbook.R;
 import com.logn.sbook.util.RegisterRunnable;
+import com.logn.sbook.util.SpUtils;
+import com.logn.sbook.util.SpValue;
 import com.logn.titlebar.TitleBar;
 
 import org.json.JSONException;
@@ -50,11 +51,9 @@ public class RegisterActivity extends FragmentActivity {
                 }
                 if (status == 1) {//注册成功
                     //存储数据，结束activity
-                    SharedPreferences.Editor editor = getSharedPreferences("sp_login", MODE_PRIVATE).edit();
-                    editor.putString("username", etUserName.getText().toString());
-                    editor.putString("password", etPassword.getText().toString());
-                    editor.putString("login_time", System.currentTimeMillis() + "");
-                    editor.apply();
+                    SpUtils.put(RegisterActivity.this, SpValue.key_username, etUserName.getText().toString());
+                    SpUtils.put(RegisterActivity.this, SpValue.key_password, etPassword.getText().toString());
+                    SpUtils.put(RegisterActivity.this, SpValue.key_login_time, System.currentTimeMillis() + "");
 
 
                     Intent toGuideActivity = new Intent();

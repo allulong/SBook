@@ -2,7 +2,6 @@ package com.logn.sbook.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,23 +9,36 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.logn.sbook.R;
 import com.logn.sbook.beans.BookInfo;
+import com.logn.sbook.beans.BookWithUser;
+import com.logn.sbook.beans.StatusSearch;
+import com.logn.sbook.beans.User;
+import com.logn.sbook.beans.change.BookUser2Info;
 import com.logn.sbook.util.BookAdapter;
-import com.logn.sbook.util.GetBookDataRunnable;
+import com.logn.sbook.util.FileUtil;
+import com.logn.sbook.util.ImageRunnable;
+import com.logn.sbook.util.SearchRunnable;
 import com.logn.sbook.util.SimpleItemDecoration;
+import com.logn.sbook.util.SpUtils;
+import com.logn.sbook.util.SpValue;
 import com.logn.sbook.util.viewPagerAdapter;
 import com.shizhefei.fragment.LazyFragment;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +77,9 @@ public class viewPagerFragment extends LazyFragment {
     private LinearLayout llSale, llSetting;
     private Button btnLogin;
 
+    private TextView tvUsername, tvAddress;
+    private ImageView imgHead;
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -74,18 +89,44 @@ public class viewPagerFragment extends LazyFragment {
                 swipeRefreshLayout.setRefreshing(false);
             } else if (msg.what == 100) {
                 String jsonData = msg.obj.toString();
-                Toast.makeText(context, "刷新成功" + jsonData, Toast.LENGTH_SHORT).show();
+                jsonData = URLDecoder.decode(jsonData);
                 swipeRefreshLayout.setRefreshing(false);
-                List dataList = findData(jsonData);
+                List<BookInfo> dataList = findData(jsonData);
+                if (dataList == null) {
+                    return;
+                }
                 bookAdapter.setmBookList(dataList);
-                recyclerView.notifyAll();
+                bookAdapter.notifyDataSetChanged();
+            } else if (msg.what == 1) {
+                bookAdapter.notifyDataSetChanged();
             }
         }
     };
 
-    private List findData(String jsonData) {
-        List<BookInfo> list = new ArrayList<>();
-        return null;
+    private List<BookInfo> findData(String jsonData) {
+        List<String> urls = new ArrayList<>();
+        List<String> names = new ArrayList<>();
+        List<BookInfo> bookInfos = new ArrayList<>();
+        Log.e("findData", "" + jsonData);
+        Gson gson = new Gson();
+        List<BookWithUser> books;
+        StatusSearch statusSearch = gson.fromJson(jsonData, StatusSearch.class);
+        if (statusSearch.getStatus() != 200) {
+            return null;
+        }
+        books = statusSearch.getBooks();
+        for (BookWithUser bookWithUser : books) {
+            //在这里获取图片
+            urls.add(bookWithUser.getBook().getImages());
+            names.add(bookWithUser.getBook().getTitle());
+
+            BookInfo bookInfo = BookUser2Info.getBookInfo(bookWithUser);
+            bookInfos.add(bookInfo);
+        }
+        ImageRunnable imageRunnable = new ImageRunnable(urls, names);
+        imageRunnable.setHandler(handler);
+        new Thread(imageRunnable).start();
+        return bookInfos;
     }
 
 
@@ -94,6 +135,7 @@ public class viewPagerFragment extends LazyFragment {
         super.onCreateViewLazy(savedInstanceState);
         tabName = getArguments().getString(INTENT_STRING_TABNAME);
         context = getContext();
+        FileUtil.createDir("sbook");
 
         if (tabName == "首页") {
             setContentView(R.layout.activity_main);
@@ -105,6 +147,7 @@ public class viewPagerFragment extends LazyFragment {
 
             //实现recyclerview
 //            initBook();
+            initBookData();
             recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(layoutManager);
@@ -115,6 +158,21 @@ public class viewPagerFragment extends LazyFragment {
             setContentView(R.layout.activity_mine);
             initView();
         }
+
+//        testJson();
+    }
+
+    private void testJson() {
+        String json = "{\"id\":110}";
+        Gson gson = new Gson();
+        Log.e("testJson", "start");
+        User user = gson.fromJson(json, User.class);
+        Log.e("testJson", "end:"+user.toString());
+    }
+
+    private void initBookData() {
+        String url = "http://c1y7502888.iok.la:23110/search";
+        new Thread(new SearchRunnable(handler, url, "all")).start();
     }
 
     @Override
@@ -149,10 +207,7 @@ public class viewPagerFragment extends LazyFragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = context
-                        .getSharedPreferences("sp_login", Context.MODE_PRIVATE).edit();
-                editor.clear();
-                editor.apply();
+                SpUtils.clear(context);
                 change2Logout();
             }
         });
@@ -175,6 +230,9 @@ public class viewPagerFragment extends LazyFragment {
         llSale = (LinearLayout) findViewById(R.id.ll_sale_mime);
         llSetting = (LinearLayout) findViewById(R.id.ll_setting_mime);
         btnLogin = (Button) findViewById(R.id.mime_login);
+        tvUsername = (TextView) findViewById(R.id.mine_username);
+        tvAddress = (TextView) findViewById(R.id.mine_useraddress);
+        imgHead = (ImageView) findViewById(R.id.mine_userimage);
     }
 
     private void setEntry(boolean login) {
@@ -182,12 +240,14 @@ public class viewPagerFragment extends LazyFragment {
             View.OnClickListener btnListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent = new Intent();
                     switch (v.getId()) {
                         case R.id.ll_sale_mime:
-                            Toast.makeText(context, "待售物品", Toast.LENGTH_SHORT).show();
+                            intent.setClass(context, kindsOfBooksDetail.class);
+                            intent.putExtra(KIND_OF_BOOK, "出售");
+                            startActivity(intent);
                             break;
                         case R.id.ll_setting_mime:
-                            Intent intent = new Intent();
                             intent.setClass(context, SettingActivity.class);
                             startActivity(intent);
                             break;
@@ -197,6 +257,11 @@ public class viewPagerFragment extends LazyFragment {
 
             llSale.setOnClickListener(btnListener);
             llSetting.setOnClickListener(btnListener);
+
+            String username = SpUtils.get(context, SpValue.key_username, "张三");
+            String address = SpUtils.get(context, SpValue.key_address, "中国北京");
+            tvUsername.setText(username);
+            tvAddress.setText(address);
         } else {
             View.OnClickListener btnListener = new View.OnClickListener() {
                 @Override
@@ -207,19 +272,19 @@ public class viewPagerFragment extends LazyFragment {
 
             llSale.setOnClickListener(btnListener);
             llSetting.setOnClickListener(btnListener);
+            tvUsername.setText("姓名");
+            tvAddress.setText("地址");
         }
     }
 
 
     private boolean hasLogin() {
-        SharedPreferences sp = context.getSharedPreferences("sp_login", Context.MODE_PRIVATE);
-        String time = sp.getString("login_time", "0");
+        String time = SpUtils.get(context, SpValue.key_login_time, "0");
         if (time.equals("0")) {
             return false;
         }
         return true;
     }
-
 
     //从后台数据库获取Book数据-首页
     private void initBook() {
@@ -272,21 +337,11 @@ public class viewPagerFragment extends LazyFragment {
             @Override
             public void onRefresh() {
 
-                GetBookDataRunnable runnable = new GetBookDataRunnable();
-                runnable.setHandler(handler);
-                new Thread(runnable).start();
+                initBookData();
             }
         });
-//        swipeRefreshLayout.setRefreshing(false);
     }
 
-    //Display自动播放图片
-//    public void autoPlay(){
-//        viewFlipper= (ViewFlipper) findViewById(R.id.displayView);
-//        viewFlipper.setInAnimation(this,R.anim.slide_in_left);
-//        viewFlipper.setOutAnimation(this,R.anim.slide_out_right);
-//        viewFlipper.startFlipping();
-//    }
     //实现ViewPager-首页
     public void displayWithViewPager() {
         viewPagerAdapter viewPagerAdapter = new viewPagerAdapter();
@@ -294,7 +349,7 @@ public class viewPagerFragment extends LazyFragment {
 
         viewpager1 = inflater.inflate(R.layout.viewpager1, null);
         viewpager2 = inflater.inflate(R.layout.viewpager2, null);
-        viewPagerAdapter.viewList = new ArrayList<View>();
+        viewPagerAdapter.viewList = new ArrayList<>();
         viewPagerAdapter.viewList.add(viewpager1);
         viewPagerAdapter.viewList.add(viewpager2);
         viewPager.setAdapter(viewPagerAdapter);
